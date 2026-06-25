@@ -1,10 +1,10 @@
-"""Approach A, Rules / heuristics (the 'before' state).
+"""Approach A: rules and heuristics.
 
-No ML. Keyword lexicons for intent, a sentiment word list, and regex to pull
-fields out of a receipt. This is what most support teams actually start with,
-and it's the honest baseline every other approach has to beat. Its failure
-modes are the teaching point: it can't read free-text it wasn't told about, and
-every new phrasing means a new keyword.
+No machine learning. Keyword lexicons for intent, a sentiment word list, and
+regular expressions to extract fields from a receipt. This is the baseline the
+other approaches are measured against. Its limitations are deliberate: it
+cannot interpret text it was not explicitly programmed for, and every new
+phrasing requires another keyword.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from schema import (
     decide_priority,
 )
 
-# Ordered most-specific first, the first lexicon that matches wins.
+# Ordered most specific first, the first lexicon that matches wins.
 INTENT_KEYWORDS = [
     ("account_access", ["locked out", "log in", "login", "password", "hacked", "two-factor", "2fa", "reset"]),
     ("damaged_product", ["damaged", "cracked", "broken", "dent", "scratched", "torn"]),
@@ -46,7 +46,7 @@ def classify_intent(text: str) -> str:
     for intent, keywords in INTENT_KEYWORDS:
         if any(k in low for k in keywords):
             return intent
-    return "general_inquiry"  # the catch-all when nothing matches
+    return "general_inquiry"  # the catch all when nothing matches
 
 
 def classify_sentiment(text: str) -> str:
@@ -59,8 +59,8 @@ def classify_sentiment(text: str) -> str:
 
 
 def extract_document(content: str) -> ExtractedFields:
-    """Regex extraction, works only because we know the receipt's exact
-    layout. Change the template and this silently returns nothing."""
+    """Regular expression extraction. It works only because the receipt layout
+    is known in advance. Change the format and it silently returns nothing."""
     fields = ExtractedFields()
     if (m := RECEIPT_ORDER.search(content)):
         fields.order_id = m.group(1)
@@ -72,8 +72,8 @@ def extract_document(content: str) -> ExtractedFields:
 
 
 def classify_image(content: str) -> str:
-    """The rules approach can't actually look at an image, it can only read
-    the filename. That's the limitation the ML/agent approaches remove."""
+    """The rules approach cannot inspect an image. It can only read the
+    filename. That is the limitation the ML and agent approaches remove."""
     if "damaged" in content:
         return "damaged"
     if "intact" in content:

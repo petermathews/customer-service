@@ -1,8 +1,8 @@
 """Shared data structures for the triage pipeline.
 
-Every approach in this repo, rules, classic ML, GenAI, and the LangGraph
-agent, produces the *same* `TriageResult` for an incoming ticket. That's the
-whole point: one business process, four implementations, directly comparable.
+All four implementations (rules, classic ML, GenAI, and the LangGraph agent)
+return the same `TriageResult` for an incoming ticket. A single result type
+keeps the implementations directly comparable.
 """
 
 from __future__ import annotations
@@ -24,8 +24,8 @@ INTENTS = [
     "general_inquiry",
 ]
 
-# Each intent routes to a team. Routing is part of what we're comparing, so it
-# lives here as the single source of truth.
+# Each intent maps to a destination team. Routing is part of the comparison, so
+# it lives here as the single source of truth.
 INTENT_TO_ROUTE = {
     "billing_question": "Billing",
     "refund_request": "Refunds",
@@ -71,8 +71,8 @@ class TriageResult:
 
 
 def decide_priority(intent: str, sentiment: str) -> str:
-    """Priority policy shared by every approach so the comparison is apples to
-    apples. Angry customers and account-security issues jump the queue."""
+    """Priority policy shared by every implementation so the comparison stays
+    consistent. Negative sentiment and account security issues take precedence."""
     if intent == "account_access":
         return "urgent"
     if sentiment == "negative" and intent in ("complaint", "damaged_product", "refund_request"):
@@ -98,7 +98,7 @@ def decide_action(intent: str, has_document: bool, has_image: bool) -> str:
     if intent == "account_access":
         return "Trigger identity verification flow"
     if intent == "complaint":
-        return "Escalate to a manager for personal follow-up"
+        return "Escalate to a manager for personal follow up"
     if intent == "order_status":
         return "Look up tracking and reply with status"
     if intent == "technical_issue":

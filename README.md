@@ -1,42 +1,78 @@
-# Customer service ticket triage, built four ways
+# Customer Service Triage: Rules vs ML vs GenAI vs Agents
 
-Same problem solved four different ways, then compared on cost, accuracy, and what each one can actually do.
+A practical comparison of four ways to automate one customer service workflow, measured on accuracy, cost, latency, and capability.
 
-The problem: a support ticket comes in, sometimes with an attachment. Work out what it's about, how urgent it is, pull any data off the attachment, and route it to the right team.
+## What this is
 
-I built that as a rules script, a trained ML model, a single Claude call, and a LangGraph agent. The interesting part isn't any one of them. It's deciding which one fits a given step, and backing that decision with numbers instead of opinion.
+A common failure mode in applied AI is reaching for an agent or a large language model before understanding the workflow. This project takes the opposite approach. It implements a single, familiar support workflow four ways and measures the tradeoffs rather than assuming them.
 
-The dataset is synthetic. Real ticket queues are proprietary, which is the reason a public demo like this has to make its own data.
+The workflow is ticket intake. An inbound support ticket arrives, sometimes with an attachment. The system classifies the request, assesses its urgency, extracts any structured data from the attachment, and routes the ticket to the appropriate team. The same workflow is implemented as:
 
-## The four versions
+1. Rules and regular expressions
+2. Classic machine learning
+3. A single Claude call with structured output
+4. A LangGraph agent
 
-| Version | Stack | What it covers |
+Every implementation returns the same `TriageResult`, so the comparison is direct rather than theoretical. The recurring conclusion is that the right design is usually a hybrid: rules and classic ML for the stable, high volume majority, and GenAI or an agent for the messy, branching minority.
+
+## What this demonstrates
+
+- Why rules remain the right starting point for stable, well defined logic.
+- When classic ML outperforms rules for intent classification, given labelled data.
+- Where GenAI justifies its cost: messy text, unseen document formats, and field extraction without training data.
+- When an agent is warranted: workflows that branch into different actions or tools.
+- How cost behaves at different ticket volumes, mapped to real cloud pricing.
+
+## Decision rule: when to use each
+
+| Situation | Recommended starting point |
+| --- | --- |
+| The logic is stable and easy to specify | Rules |
+| Labelled historical tickets are available | Classic ML |
+| The input is messy or document formats vary | GenAI |
+| The workflow branches into different actions or tools | Agent |
+| Low cost at high volume is the priority | Rules or classic ML |
+| Flexibility at low volume is the priority | GenAI |
+
+## The four implementations
+
+| Implementation | Stack | Demonstrates |
 | --- | --- | --- |
-| A. Rules | Python, regex | Keyword matching and a regex receipt parser. The cheap starting point. |
-| B. Classic ML | pandas, scikit-learn | TF-IDF with logistic regression, plus an MLP neural net for comparison. |
-| Image model | scikit-learn | A small classifier on image pixels, for photo attachments. |
-| C. GenAI | Claude API, structured output | One call classifies the ticket and extracts receipt fields, no training data. |
-| D. Agent | LangGraph + Claude | A graph that routes differently depending on intent and what's attached. |
+| A. Rules | Python, regex | Keyword classification and regular expression field extraction |
+| B. Classic ML | pandas, scikit-learn | TF-IDF with logistic regression, and an MLP neural network |
+| Image model | scikit-learn | Classification on raw image pixels for photo attachments |
+| C. GenAI | Claude API, structured output | Classification and field extraction in one call, no training data |
+| D. Agent | LangGraph, Claude | Conditional routing based on intent and attachment type |
 
-Every version returns the same result object, so they line up directly. `src/evaluate.py` runs them all and prints a table: accuracy, cost per 1,000 tickets at real Claude pricing, latency, and what each one can and can't handle.
+`src/evaluate.py` runs all of them and produces a single comparison table covering accuracy, cost per thousand tickets at current Claude pricing, latency, and capability.
 
-## Map the process first
+## The workflow
 
-Before reaching for a model, write down the current process and who does what.
+Effective automation starts with the existing process, not the model. The table below describes the current state of a typical support operation.
 
-**People:** frontline agents read each ticket, guess the queue, open attachments by hand, and escalate upset customers on instinct.
+| Layer | Current state |
+| --- | --- |
+| People | Frontline agents read each ticket, infer the correct queue, open attachments manually, and escalate dissatisfied customers at their discretion. |
+| Process | A ticket is received, read, classified by request type and urgency, enriched with any attachment data, then routed and actioned. |
+| Technology | A shared inbox and a ticketing system. Routing depends on individual judgment and is not measured. |
 
-**Process:** ticket arrives, someone reads it, classifies it, checks sentiment and priority, opens any receipt or photo to pull details, routes it, and acts.
+The governing question is which of those steps warrant a rule, a trained model, a language model call, or an agent, and what each option costs to operate.
 
-**Technology:** a shared inbox and a ticketing tool. Routing is human judgment and nothing gets measured.
+## About the data
 
-Then the real question: which of those steps should be a rule, which a trained model, which an LLM call, which an agent, and what does each one cost.
+The dataset is synthetic by design. Real customer service queues contain private customer data, proprietary categories, and attachments that cannot be published. The value here is the architecture and the evaluation, not the specific tickets:
 
-## Start in the notebook
+```
+ticket in -> classify -> assess sentiment and priority -> inspect attachment -> extract fields -> route -> compare cost and accuracy
+```
 
-[`notebooks/customer_service_triage.ipynb`](notebooks/customer_service_triage.ipynb) walks the whole thing end to end. It runs in Google Colab (open it from the GitHub tab inside Colab and paste the repo URL) or locally.
+A real team can substitute its own ticket history and keep the same evaluation structure. `data/generate_dataset.py` builds the dataset deterministically.
 
-## Run it locally
+## The notebook
+
+[`notebooks/customer_service_triage.ipynb`](notebooks/customer_service_triage.ipynb) presents the full analysis end to end. It runs in Google Colab (open it from the GitHub tab within Colab and paste the repository URL) or locally.
+
+## Running locally
 
 ```bash
 pip install -r requirements.txt
@@ -44,45 +80,53 @@ python data/generate_dataset.py      # builds data/tickets.csv
 python src/evaluate.py               # prints the comparison table
 ```
 
-To run the Claude and agent versions against the real API:
+To run the Claude and agent implementations against the live API:
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
 pip install langgraph langchain-anthropic
-python src/evaluate.py --live        # adds measured GenAI accuracy and tokens
-python src/approach_c_genai.py       # one live Claude triage call
-python src/approach_d_agent.py       # one agent run
+python src/evaluate.py --live        # adds measured GenAI accuracy and token counts
+python src/approach_c_genai.py       # a single live Claude triage call
+python src/approach_d_agent.py       # a single agent run
 ```
 
-## Where it runs and what it costs
+## What the comparison measures
 
-Accuracy is only half the call. The other half is where it runs and how the bill works. [`docs/deployment_and_cost.md`](docs/deployment_and_cost.md) maps each version to its AWS, GCP, and Azure service, shows that the same Claude code runs on Bedrock, Vertex, or the Anthropic API with only the client and model id changing ([`src/providers.py`](src/providers.py)), and [`src/tco.py`](src/tco.py) models the monthly cost at scale.
+For each implementation, the table reports intent accuracy, sentiment accuracy, document extraction success, latency, cost per thousand tickets, training data requirements, extraction robustness, image handling, and explainability. The offline rows (rules and classic ML) are measured on every run. The GenAI rows show estimated cost by default; accuracy and latency are populated when the notebook or `evaluate.py` is rerun with `ANTHROPIC_API_KEY` and `--live`.
 
-```bash
-python src/tco.py
-```
+## Cost and deployment
 
-A provisioned ML endpoint is a fixed cost whether one ticket flows through it or ten million. Claude calls are billed by the token, so they cost nothing when idle and scale with volume. They cross over around 238,000 tickets a month: below that, calling Haiku is cheaper than renting an endpoint; above it, host the trained model. Worth working out before you pick an architecture, not after.
+Accuracy is only part of the decision. Where a workload runs and how it is billed frequently matters more, and that is a cloud question. [`docs/deployment_and_cost.md`](docs/deployment_and_cost.md) maps each implementation to its equivalent service on AWS, GCP, and Azure, shows that the same Claude code runs on Amazon Bedrock, Google Vertex AI, or the Anthropic API with only the client and model identifier changing ([`src/providers.py`](src/providers.py)), and [`src/tco.py`](src/tco.py) models monthly cost at scale.
 
-## Layout
+A provisioned machine learning endpoint carries a fixed monthly cost regardless of volume. Claude calls are billed by the token, so they cost nothing when idle and scale linearly with volume. The two cross at approximately 238,000 tickets per month. Below that threshold, calling Claude Haiku is less expensive than operating a dedicated endpoint; above it, hosting the trained model is more economical.
+
+## Walkthrough
+
+1. The problem: support tickets must be classified, prioritised, enriched from attachments, and routed.
+2. The structure: the same workflow is implemented as rules, classic ML, GenAI, and an agent, each returning the same `TriageResult`.
+3. The evaluation: `src/evaluate.py` measures accuracy, latency, cost, and capability across all four.
+4. The cost model: `src/tco.py` adds the fixed versus variable cost crossover and the cloud service mapping.
+5. The conclusion: the strongest design is usually hybrid, with rules and classic ML handling the stable bulk and GenAI or an agent handling the messy, branching cases.
+
+## Repository layout
 
 ```
 data/generate_dataset.py        reproducible synthetic ticket dataset
 src/schema.py                   shared result object, routing and priority rules
 src/approach_a_rules.py         A. keyword and regex baseline
-src/approach_b_ml.py            B. TF-IDF with LogReg and an MLP neural net
+src/approach_b_ml.py            B. TF-IDF with logistic regression and an MLP neural network
 src/image_classifier.py         image classification
-src/approach_c_genai.py         C. Claude structured output, Haiku/Sonnet/Opus
+src/approach_c_genai.py         C. Claude structured output, Haiku, Sonnet, and Opus tiers
 src/approach_d_agent.py         D. LangGraph branching agent
-src/providers.py                same Claude code on Anthropic, Bedrock, or Vertex
-src/evaluate.py                 runs everything and prints the comparison
-src/tco.py                      cost model and the fixed vs variable crossover
-docs/deployment_and_cost.md     cloud mapping and total cost of ownership
-notebooks/                      the walkthrough
+src/providers.py                the same Claude code on Anthropic, Bedrock, or Vertex
+src/evaluate.py                 runs every implementation and prints the comparison
+src/tco.py                      cost model and the fixed versus variable crossover
+docs/deployment_and_cost.md     cloud service mapping and total cost of ownership
+notebooks/                      the full walkthrough
 ```
 
 ## Stack
 
-Python, Jupyter and Colab, pandas, scikit-learn, LangGraph, and the Claude API (`anthropic`, `langchain-anthropic`).
+Python, Jupyter and Google Colab, pandas, scikit-learn, LangGraph, and the Claude API via the `anthropic` and `langchain-anthropic` libraries.
 
-Built by Peter Mathews.
+Author: Peter Mathews

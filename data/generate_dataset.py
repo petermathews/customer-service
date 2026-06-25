@@ -1,10 +1,10 @@
-"""Generate a labelled customer-service ticket dataset.
+"""Generate a labelled customer service ticket dataset.
 
 Why synthetic? Real support queues are proprietary, the exact constraint
-behind this whole exercise. So we generate a reproducible stand-in: realistic
+behind this whole exercise. So we generate a reproducible stand in: realistic
 ticket text, some with attachments (receipts and photos), each labelled with
-the intent / sentiment / route a coach would have a team predict. Swapping in a
-real public dataset (e.g. HuggingFace `banking77`) is a one-cell change shown
+the intent, sentiment, and route to be predicted. Swapping in a
+real public dataset (e.g. HuggingFace `banking77`) is a one cell change shown
 in the notebook.
 
 Run:  python data/generate_dataset.py
@@ -115,7 +115,7 @@ AMBIGUOUS = {
 for _intent, _extra in AMBIGUOUS.items():
     TEMPLATES[_intent].extend(_extra)
 
-# Shared filler added to many tickets, greetings, sign-offs, and hedges that
+# Shared filler added to many tickets, greetings, sign offs, and hedges that
 # appear across every intent. This is what real tickets look like, and it's
 # what stops a classifier from trivially memorising templates: the same words
 # show up under different labels, so the model has to learn the signal, not the
@@ -182,7 +182,7 @@ def main() -> None:
             attachment_type = "none"
             attachment_content = ""
             kind = ATTACHMENT_RULE.get(intent)
-            # ~70% of attachment-eligible intents actually include one.
+            # ~70% of attachment eligible intents actually include one.
             if kind and rng.random() < 0.7:
                 attachment_type = kind
                 if kind == "document":

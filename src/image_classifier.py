@@ -1,15 +1,15 @@
-"""Image classification mini-lesson.
+"""Image classification.
 
-When a customer attaches a *photo* (a damaged item, a screenshot of an error),
-the system needs to look at pixels, not text. That's image classification, one
-of the four ML concepts a coach has to be fluent in.
+When a customer attaches a photo (a damaged item, a screenshot of an error),
+the system has to work from pixels rather than text. That is image
+classification, the fourth problem type in this comparison.
 
-Training on real product photos needs a labelled image set we can't ship here,
-so this is a self-contained stand-in: scikit-learn's `digits` dataset (1,797
-real 8×8 handwritten-digit images) trained with an MLP. The *pipeline* is
-exactly what you'd use on product photos, load pixels → split → train a neural
-net → evaluate, only the images differ. In the agent, this classifier stands
-in for "look at the attached photo and decide what it shows."
+Training on real product photos requires a labelled image set that cannot be
+published, so this uses a self contained stand in: scikit-learn's `digits`
+dataset of 1,797 genuine 8x8 handwritten digit images, trained with an MLP. The
+pipeline is the one used on product photos (load pixels, split, train a neural
+network, evaluate); only the images differ. In the agent, this classifier
+stands in for inspecting the attached photo and deciding what it shows.
 """
 
 from __future__ import annotations
@@ -23,9 +23,9 @@ from sklearn.metrics import accuracy_score
 
 
 def train_image_classifier():
-    """Returns a fitted pixels-in → label-out classifier and its test accuracy."""
+    """Returns a fitted classifier that maps pixels to a label, plus its test accuracy."""
     digits = load_digits()
-    X, y = digits.images.reshape(len(digits.images), -1), digits.target  # flatten 8x8 → 64
+    X, y = digits.images.reshape(len(digits.images), -1), digits.target  # flatten 8x8 to 64 features
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.25, random_state=42, stratify=y
     )
@@ -40,4 +40,4 @@ def train_image_classifier():
 
 if __name__ == "__main__":
     _, acc = train_image_classifier()
-    print(f"Image classifier (digits stand-in) test accuracy: {acc:.1%}")
+    print(f"Image classifier (digits stand in) test accuracy: {acc:.1%}")

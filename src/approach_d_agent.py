@@ -1,22 +1,23 @@
-"""Approach D, Agentic workflow with LangGraph.
+"""Approach D: an agentic workflow with LangGraph.
 
-The same intake, but as a graph that *branches*: classify the ticket, then take
-different paths depending on the intent and what's attached, 
+The same intake expressed as a graph that branches. After classifying the
+ticket, the path depends on the intent and the attachment:
 
-    classify ─┬─ document attached ─→ extract receipt fields ─┐
-              ├─ image attached ────→ classify the photo ──────┤
-              └─ nothing attached ──────────────────────────────┼─→ decide route + action
-                                                                 │
-              (negative + complaint) ──────→ escalate ───────────┘
+    classify, then:
+      document attached        extract the receipt fields
+      image attached           classify the photo
+      complaint and negative   escalate
+      nothing attached         proceed
+    all paths then converge on the routing and action step.
 
-That conditional routing is exactly the "depending on the action and whether
-there's an attachment, we take different actions" shape, and it's what an agent
-framework models cleanly that a single prompt or a flat ML pipeline does not.
+That conditional routing, where the next action depends on the ticket and the
+attachment, is what an agent framework expresses cleanly and a single prompt or
+a flat ML pipeline does not.
 
-Uses Claude (via langchain-anthropic) for classification + extraction, the
-sklearn image classifier for photos, and LangGraph for the control flow.
+It uses Claude (via langchain-anthropic) for classification and extraction, the
+scikit-learn image classifier for photos, and LangGraph for the control flow.
 
-Needs:  pip install langgraph langchain-anthropic   +   ANTHROPIC_API_KEY
+Requires: pip install langgraph langchain-anthropic, and ANTHROPIC_API_KEY.
 """
 
 from __future__ import annotations

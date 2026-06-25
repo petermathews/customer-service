@@ -1,4 +1,4 @@
-"""Total cost of ownership, and the fixed-vs-variable crossover.
+"""Total cost of ownership, and the fixed versus variable crossover.
 
 "What does it cost" has no answer without "where does it run." Each approach
 maps to a different cloud cost *model*, and the models cross over:
@@ -7,17 +7,17 @@ maps to a different cloud cost *model*, and the models cross over:
     Azure ML online endpoint) is a **fixed** monthly cost, you pay for the
     instance whether 1 or 10M tickets flow through it. Cheap per ticket at high
     volume, wasteful at low volume.
-  * A **per-token LLM** (Claude on Bedrock / Vertex / Anthropic) is **variable**
-, $0 when idle, scales linearly with volume. Cheap at low volume, expensive
-    at high volume.
+  * A per token LLM (Claude on Bedrock, Vertex, or Anthropic) is variable. It
+    costs nothing when idle and scales linearly with volume. Cheap at low
+    volume, expensive at high volume.
   * **Rules on serverless** (Lambda / Cloud Functions / Azure Functions) are the
-    near-free variable floor.
+    near free variable floor.
 
 The crossover volume, where the fixed endpoint becomes cheaper than calling the
-LLM, is the single most useful number in this whole analysis, and the kind of
-thing a coach should make a team compute before they pick an architecture.
+LLM, is the single most useful number in this whole analysis, and a figure
+worth establishing before selecting an architecture.
 
-All prices are **illustrative on-demand list prices** for shaping the decision, 
+All prices are **illustrative on demand list prices** for shaping the decision, 
 confirm current pricing for your region/provider. Run:  python src/tco.py
 """
 
@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-# --- cost assumptions (edit these; they're list-price estimates) -------------
+# --- cost assumptions (edit these; they're list price estimates) -------------
 # Per-1M-token prices mirror approach_c.MODEL_TIERS.
 PRICE_PER_MTOK = {
     "haiku": {"in": 1.00, "out": 5.00},
@@ -35,11 +35,11 @@ PRICE_PER_MTOK = {
 EST_INPUT_TOKENS = 220
 EST_OUTPUT_TOKENS = 30
 
-# A small always-on real-time inference endpoint, ~$0.12/hr × 730 hr.
+# A small inference endpoint kept running continuously, about $0.12/hr times 730 hr.
 ML_ENDPOINT_MONTHLY = 88.0
-# Serverless per-ticket costs (compute only; model is tiny).
+# Serverless per ticket costs (compute only; model is tiny).
 RULES_SERVERLESS_PER_TICKET = 0.0000004   # ~$0.40 / 1M tickets
-ML_SERVERLESS_PER_TICKET = 0.00005        # ~$50 / 1M tickets (cold-start + compute)
+ML_SERVERLESS_PER_TICKET = 0.00005        # ~$50 / 1M tickets (cold start + compute)
 
 
 def llm_cost_per_ticket(tier: str, batch: bool = False) -> float:
@@ -53,7 +53,7 @@ def monthly_cost(approach: str, volume: int) -> float:
     if approach == "rules_serverless":
         return volume * RULES_SERVERLESS_PER_TICKET
     if approach == "ml_endpoint":
-        return ML_ENDPOINT_MONTHLY                      # fixed, volume-independent
+        return ML_ENDPOINT_MONTHLY                      # fixed, volume independent
     if approach == "ml_serverless":
         return volume * ML_SERVERLESS_PER_TICKET
     if approach.startswith("genai_"):
@@ -63,18 +63,18 @@ def monthly_cost(approach: str, volume: int) -> float:
 
 
 def crossover_volume(fixed_monthly: float, variable_per_ticket: float) -> float:
-    """Volume at which the fixed-cost option overtakes the variable one."""
+    """Volume at which the fixed cost option overtakes the variable one."""
     return fixed_monthly / variable_per_ticket
 
 
 def build_tco_table(volumes=(10_000, 100_000, 1_000_000, 10_000_000)) -> pd.DataFrame:
     approaches = [
-        ("Rules → serverless (Lambda/Functions)", "rules_serverless"),
-        ("Classic ML → provisioned endpoint", "ml_endpoint"),
-        ("Classic ML → serverless inference", "ml_serverless"),
-        ("Claude Haiku (per-token)", "genai_haiku"),
-        ("Claude Sonnet (per-token)", "genai_sonnet"),
-        ("Claude Opus (per-token)", "genai_opus"),
+        ("Rules on serverless (Lambda, Functions)", "rules_serverless"),
+        ("Classic ML on a provisioned endpoint", "ml_endpoint"),
+        ("Classic ML on serverless inference", "ml_serverless"),
+        ("Claude Haiku (per token)", "genai_haiku"),
+        ("Claude Sonnet (per token)", "genai_sonnet"),
+        ("Claude Opus (per token)", "genai_opus"),
     ]
     rows = []
     for label, key in approaches:
@@ -94,7 +94,7 @@ def main() -> None:
     xo = crossover_volume(ML_ENDPOINT_MONTHLY, llm_cost_per_ticket("haiku"))
     print(
         f"\nCrossover: a provisioned ML endpoint (${ML_ENDPOINT_MONTHLY:.0f}/mo fixed) "
-        f"beats per-token Claude Haiku above ~{xo:,.0f} tickets/month."
+        f"beats per token Claude Haiku above ~{xo:,.0f} tickets/month."
     )
     print("Below that, just call the LLM, you're not paying for an idle endpoint.")
     print("Above it, host the trained model. (Quality is a separate axis, the")

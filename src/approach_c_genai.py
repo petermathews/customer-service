@@ -1,17 +1,18 @@
 """Approach C, GenAI with the Claude API (structured output).
 
 One model call does the whole intake: classify intent + sentiment, and, when a
-receipt is attached, extract the order fields in the *same* call, zero-shot, no
-labelled training data. This is where the LLM earns its cost: it reads
-free-text it was never trained on and pulls structured data out of a document a
-regex would choke on.
+receipt is attached, extract the order fields in the same call, with no
+labelled training data. This is where the model earns its cost: it reads text
+it was never trained on and pulls structured data from a document that defeats a
+regular expression.
 
-Two things a coach would point out to a team:
+Two points worth noting:
   * `messages.parse()` with a Pydantic schema *guarantees* valid structured
     output, no brittle JSON parsing.
-  * The model tier is a dial. Haiku is cheap and fast and fine for triage;
-    Sonnet/Opus cost more but reason better. `MODEL_TIERS` makes that explicit
-    so you can run the same code across tiers and compare (see evaluate.py).
+  * The model tier is a cost and quality control. Haiku is inexpensive and fast
+    and adequate for triage; Sonnet and Opus cost more and reason more capably.
+    `MODEL_TIERS` lists all three, so the same code can run across tiers and be
+    compared (see evaluate.py).
 
 Needs an API key:  export ANTHROPIC_API_KEY=sk-ant-...
 """
@@ -34,7 +35,7 @@ from schema import (
 )
 
 # Pricing as published (USD per 1M tokens), used by the cost comparison.
-# Haiku is the default for high-volume triage; the others show the tradeoff.
+# Haiku is the default for high volume triage; the others show the tradeoff.
 MODEL_TIERS = {
     "haiku": {"id": "claude-haiku-4-5", "in": 1.00, "out": 5.00},
     "sonnet": {"id": "claude-sonnet-4-6", "in": 3.00, "out": 15.00},
@@ -55,7 +56,7 @@ class TriageSchema(BaseModel):
 
 
 SYSTEM = (
-    "You are a customer-service intake assistant. Classify the ticket and, if a "
+    "You are a customer service intake assistant. Classify the ticket and, if a "
     "document is attached, extract its order fields. Return only the structured "
     "result. Use exactly the allowed values for intent and sentiment."
 )
@@ -77,7 +78,7 @@ class GenAITriager:
         self.tier = tier
         self.provider = provider
         # The same triage code runs on Anthropic, Bedrock, or Vertex, only the
-        # client and the model-id string change. See providers.py.
+        # client and the model id string change. See providers.py.
         from providers import make_client, resolve_model
 
         self.model = resolve_model(provider, tier)

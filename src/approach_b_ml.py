@@ -1,14 +1,16 @@
-"""Approach B, Traditional ML (scikit-learn).
+"""Approach B: traditional machine learning (scikit-learn).
 
-Learns intent and sentiment from labelled data instead of hand-written rules.
-Two models, on purpose:
-  * LogisticRegression over TF-IDF, the strong, cheap baseline you must beat.
-  * MLPClassifier, a small **neural network**, to show the same pipeline with
-    a deeper model (one of the four ML concepts a coach has to teach).
+Learns intent and sentiment from labelled data rather than hand written rules.
+Two models are included:
+  * Logistic regression over TF-IDF features, the strong and inexpensive
+    baseline.
+  * An MLP neural network, the same pipeline with a deeper model, for direct
+    comparison with the linear baseline.
 
-It still leans on the regex receipt parser for document fields, that's a fair
-point in the comparison: classic ML classifies text well but doesn't do
-zero-shot extraction or read images without a lot more labelled data.
+It still uses the regular expression receipt parser for document fields, which
+is a fair point in the comparison: classic ML classifies text well but does not
+extract fields from unseen documents or read images without substantially more
+labelled data.
 """
 
 from __future__ import annotations
@@ -29,13 +31,13 @@ DATA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 
 
 def _make_pipeline(model: str) -> Pipeline:
-    """TF-IDF features → classifier. Swapping the final estimator is the only
-    difference between the baseline and the neural net, a nice thing to show
-    students about how scikit-learn pipelines compose."""
+    """TF-IDF features into a classifier. Swapping the final estimator is the
+    only difference between the baseline and the neural network, which shows how
+    scikit-learn pipelines compose."""
     if model == "logreg":
         clf = LogisticRegression(max_iter=1000)
     elif model == "mlp":
-        # A small feed-forward neural network. One hidden layer keeps it fast
+        # A small feed forward neural network. One hidden layer keeps it fast
         # and is plenty for this dataset.
         clf = MLPClassifier(hidden_layer_sizes=(64,), max_iter=800, random_state=42)
     else:
@@ -94,4 +96,4 @@ if __name__ == "__main__":
     for model in ("logreg", "mlp"):
         t = MLTriager(intent_model=model, sentiment_model=model).fit(train)
         correct = sum(t.triage(r.text).intent == r.intent for r in test.itertuples())
-        print(f"{model:7s} intent accuracy on held-out set: {correct / len(test):.1%}")
+        print(f"{model:7s} intent accuracy on held out set: {correct / len(test):.1%}")

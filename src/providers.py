@@ -1,30 +1,29 @@
 """Provider portability, the same Claude code on Anthropic, AWS, or GCP.
 
-A coach should be fluent in *where* a model runs, not just which model. Claude
+Where a model runs matters as much as which model. Claude
 is reachable three ways that share the exact same Messages API, only the client
-constructor and the model-id string change:
+constructor and the model id string change:
 
     Anthropic API   anthropic.Anthropic()              model="claude-haiku-4-5"
     Amazon Bedrock  anthropic.AnthropicBedrock()       model="global.anthropic.claude-haiku-4-5-20251001-v1:0"
     Google Vertex   anthropic.AnthropicVertex()        model="claude-haiku-4-5@<version>"
 
-Everything downstream, `messages.parse()`, the Pydantic schema, the response
-handling in approach_c, is identical. That portability is the point: you pick
-the platform on procurement, security, and billing grounds, not by rewriting
-code.
+Everything downstream (`messages.parse()`, the Pydantic schema, the response
+handling in approach_c) is identical. That portability means the platform is
+chosen on procurement, security, and billing grounds, not by rewriting code.
 
 Install extras as needed:
     pip install "anthropic[bedrock]"     # AWS
     pip install "anthropic[vertex]"      # GCP
 
-NOTE: exact Bedrock/Vertex model strings are region- and version-specific and
+NOTE: exact Bedrock/Vertex model strings are region- and version specific and
 change over time. The maps below are illustrative, confirm the current id in
 the AWS Bedrock / GCP Model Garden console for your region before relying on it.
 """
 
 from __future__ import annotations
 
-# Anthropic-direct model ids (authoritative, these are what approach_c uses).
+# Anthropic direct model ids (authoritative, these are what approach_c uses).
 ANTHROPIC_IDS = {
     "haiku": "claude-haiku-4-5",
     "sonnet": "claude-sonnet-4-6",
@@ -32,7 +31,7 @@ ANTHROPIC_IDS = {
 }
 
 # Amazon Bedrock ids use an `anthropic.` provider prefix plus a routing prefix
-# (`global.` for cross-region, `us.`/`eu.` for data-residency). Illustrative.
+# (`global.` for cross region, `us.`/`eu.` for data residency). Illustrative.
 BEDROCK_IDS = {
     "haiku": "global.anthropic.claude-haiku-4-5-20251001-v1:0",
     "sonnet": "global.anthropic.claude-sonnet-4-6",
@@ -69,7 +68,7 @@ def make_client(provider: str = "anthropic"):
 
 
 def resolve_model(provider: str, tier: str) -> str:
-    """Map a tier (haiku/sonnet/opus) to the provider's model-id string."""
+    """Map a tier (haiku/sonnet/opus) to the provider's model id string."""
     try:
         return PROVIDERS[provider][tier]
     except KeyError as exc:

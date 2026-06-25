@@ -1,8 +1,8 @@
 """Evaluate every approach and build the decision matrix.
 
 The offline approaches (rules, classic ML) are measured directly on the
-held-out set. The GenAI/agent costs are computed from real published pricing
-and a representative token count, re-run with a live API key (`--live`) to fill
+held out set. The GenAI/agent costs are computed from real published pricing
+and a representative token count, re run with a live API key (`--live`) to fill
 in measured accuracy and tokens for those rows too.
 
 Run:  python src/evaluate.py          # offline rows + cost estimates
@@ -85,8 +85,8 @@ def build_matrix(live: bool = False) -> pd.DataFrame:
                "intent_acc": float("nan"), "sentiment_acc": float("nan"),
                "doc_extract_acc": float("nan"), "latency_ms": float("nan"),
                "cost_per_1k_$": round(cost_per_1k(tier), 2),
-               "training_data": "none (zero-shot)", "extraction": "zero-shot, robust",
-               "images": "vision-capable", "explainability": "low"}
+               "training_data": "none (zero shot)", "extraction": "zero shot, robust",
+               "images": "vision capable", "explainability": "low"}
         if live:
             row.update(_evaluate_genai(test, tier))
         rows.append(row)
@@ -126,8 +126,9 @@ def main() -> None:
     pd.set_option("display.max_columns", None)
     print(f"\nDecision matrix ({'live' if live else 'offline + cost estimates'}):\n")
     print(matrix.to_string(index=False))
-    print("\nAt 1,000,000 tickets/month, GenAI cost ≈ cost_per_1k × 1000; "
-          "rules/ML are ~free at inference (training is one-time).")
+    print("\nAt 1,000,000 tickets/month, GenAI cost is about cost_per_1k times "
+          "1000. Rules and classic ML are effectively free at inference; "
+          "training is incurred once.")
 
 
 if __name__ == "__main__":
