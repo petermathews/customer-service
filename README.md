@@ -1,110 +1,98 @@
 # Customer Service Triage: Rules vs ML vs GenAI vs Agents
 
-I built this to show how I think through AI implementation.
+This project compares four approaches to automating the same customer service workflow: rules, classic machine learning, GenAI, and an agent-based workflow.
 
-A lot of AI projects jump straight to the newest thing: an LLM, an agent, a framework, a demo that looks good for five minutes. But in real work, the harder question is usually simpler:
+The goal is to show practical AI implementation judgment. Rather than starting with a model or framework, the project starts with the business process: an incoming support ticket needs to be classified, prioritized, enriched from any attachment, and routed to the right team.
 
-**What is the job, and what is the smallest reliable way to automate each part of it?**
+Each implementation solves the same problem and returns the same `TriageResult`, which makes the approaches directly comparable across accuracy, latency, cost, training-data requirements, extraction capability, image handling, and explainability.
 
-So I took one familiar workflow — customer service ticket triage — and built it four ways:
+## Why I built this
 
-1. Rules and regex
-2. Classic machine learning
-3. A single Claude call with structured output
-4. A LangGraph agent
+I built this as a portfolio project to demonstrate how I approach applied AI work: define the workflow first, establish a simple baseline, then evaluate whether ML, GenAI, or an agent actually improves the solution.
 
-Each version handles the same task: read an incoming ticket, figure out what it is about, judge how urgent it is, pull data from an attachment when there is one, and route it to the right team.
+This is a common decision point for product and engineering teams. Many use cases do not require an agent. Some are better served by deterministic rules. Others benefit from a trained model. GenAI becomes valuable when the input is less structured, such as free-form customer messages or variable document formats. An agent becomes useful when the workflow needs to branch across multiple steps or tools.
 
-The point is not that one approach wins every time. The point is to make the tradeoffs visible.
+The project is intentionally small enough to review in a notebook, but structured like a real evaluation: same task, same output schema, multiple implementation paths, and a cost/quality comparison.
 
-Sometimes rules are enough. Sometimes a small ML model is better. Sometimes an LLM is worth paying for because the input is messy. And sometimes an agent makes sense because the workflow branches.
+## Workflow being modeled
 
-## Why this project
+The example workflow is customer service ticket triage.
 
-I wanted something practical enough to run, but simple enough to explain.
+For each ticket, the system needs to:
 
-Customer service is a good example because most companies understand the problem immediately. Tickets come in. People read them. Someone guesses the queue. Someone opens attachments. Someone decides whether the customer is upset enough to escalate.
+- identify the customer intent
+- assess sentiment and priority
+- inspect an attachment when present
+- extract structured fields such as order number, amount, and date
+- route the ticket to the correct support team
+- recommend the next action
 
-That process can be automated in different ways. The mistake is picking the tool before mapping the process.
+This creates a useful test case because it includes both predictable logic and messy inputs.
 
-This repo starts with the workflow, then compares the options.
+## Implementations
 
-## The workflow
-
-A ticket comes in.
-
-The system needs to:
-
-- classify the request
-- detect sentiment and priority
-- inspect an attachment if there is one
-- extract fields like order number, amount, and date
-- route the ticket
-- suggest the next action
-
-Every approach returns the same `TriageResult`, so the comparison is apples to apples instead of a bunch of disconnected demos.
-
-## The four versions
-
-| Version | Stack | What it shows |
+| Version | Stack | Purpose |
 | --- | --- | --- |
-| A. Rules | Python, regex | Fast, cheap, easy to explain, but brittle |
-| B. Classic ML | pandas, scikit-learn | Better intent classification when labelled data exists |
-| Image model | scikit-learn | A simple stand-in for classifying photo attachments |
-| C. GenAI | Claude API, structured output | Good for messy text and document extraction without training data |
-| D. Agent | LangGraph + Claude | Useful when the path changes based on the ticket and attachment |
+| A. Rules | Python, regex | Establishes a fast, explainable baseline using keyword matching and receipt parsing |
+| B. Classic ML | pandas, scikit-learn | Trains intent and sentiment classifiers using TF-IDF, logistic regression, and an MLP classifier |
+| Image model | scikit-learn | Demonstrates the image-classification path for photo attachments |
+| C. GenAI | Claude API, structured output | Uses one model call to classify the ticket and extract fields from unstructured text |
+| D. Agent | LangGraph + Claude | Routes the workflow through different steps based on intent and attachment type |
 
-`src/evaluate.py` runs the approaches and prints a comparison table.
+## Evaluation approach
 
-The table looks at:
+`src/evaluate.py` runs the approaches and produces a comparison table.
+
+The evaluation includes:
 
 - intent accuracy
 - sentiment accuracy
-- document extraction
+- document extraction success
 - latency
-- cost per 1,000 tickets
-- training data needs
-- image handling
+- estimated cost per 1,000 tickets
+- training-data requirements
+- extraction robustness
+- image-handling capability
 - explainability
 
-## The basic decision rule
+The offline rows, including rules and classic ML, run without an API key. The GenAI and agent paths can be run live by setting `ANTHROPIC_API_KEY`.
 
-This is the main takeaway:
+## Key takeaway
 
-| Situation | Start here |
+The strongest architecture is usually not one approach everywhere. It is a hybrid design.
+
+| Situation | Practical starting point |
 | --- | --- |
-| The logic is stable and obvious | Rules |
-| You have labelled historical tickets | Classic ML |
-| The text or documents are messy | GenAI |
-| The workflow branches into different paths or tools | Agent |
-| You need very low cost at high volume | Rules or ML |
-| You need flexibility before you have much data | GenAI |
+| Logic is stable and easy to define | Rules |
+| Labeled historical data is available | Classic ML |
+| Inputs are messy or document formats vary | GenAI |
+| The workflow branches into different steps or tools | Agent |
+| High-volume, low-cost processing is required | Rules or ML |
+| Flexibility is needed before much data exists | GenAI |
 
-In practice, I would usually design this as a hybrid. Use rules and ML for the predictable bulk. Use GenAI or an agent for the messy edge cases.
+In this example, rules and ML are strong candidates for the predictable, high-volume parts of the workflow. GenAI and agents are better suited for the less predictable cases, such as variable attachments, extraction from unfamiliar formats, or multi-step routing decisions.
 
-## About the data
+## Data
 
-The data is synthetic on purpose.
+The dataset is synthetic by design. Real customer service data often contains private customer information, proprietary routing categories, and attachments that should not be published.
 
-Real support queues have private customer information, company-specific categories, and attachments that should not be published. So this repo generates its own ticket set and keeps the focus on the architecture and evaluation.
-
-The pattern is what matters:
+The value of the project is the evaluation pattern:
 
 ```text
-ticket in -> classify -> assess priority -> inspect attachment -> extract fields -> route -> compare options
+ticket in -> classify -> assess priority -> inspect attachment -> extract fields -> route -> compare approaches
 ```
 
-A real company could swap in its own ticket history and keep the same structure.
+A real organization could replace the synthetic data with historical ticket data while keeping the same evaluation structure.
 
-## Start with the notebook
+## Notebook
 
-The full walkthrough is here:
+The full walkthrough is available here:
 
 [`notebooks/customer_service_triage.ipynb`](notebooks/customer_service_triage.ipynb)
 
-It runs in Google Colab or locally. The notebook is the easiest way to see the thinking end to end.
+The notebook walks through the workflow, data, rules baseline, ML model, GenAI approach, agent workflow, and final comparison.
 
-## Run it locally
+## Run locally
 
 ```bash
 pip install -r requirements.txt
@@ -112,7 +100,7 @@ python data/generate_dataset.py
 python src/evaluate.py
 ```
 
-To run the Claude and agent versions live:
+To run the Claude and agent implementations live:
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
@@ -122,46 +110,33 @@ python src/approach_c_genai.py
 python src/approach_d_agent.py
 ```
 
-Without an API key, the repo still runs the rules, ML, image classifier, and cost estimates.
-
 ## Cost and deployment
 
-Accuracy is only part of the decision.
+The project also includes a cost and deployment comparison.
 
-Cost changes a lot depending on volume. A hosted ML endpoint has a fixed monthly cost. Claude calls are pay-per-token. That means Claude can be cheaper at low volume, while a trained model can be cheaper once volume is high enough.
+A provisioned ML endpoint has a fixed monthly cost. GenAI calls are typically billed per token. That creates a tradeoff: GenAI can be cost-effective at lower volumes or for variable inputs, while a hosted model may become more economical at higher volumes.
 
-The cost write-up is here:
+The deployment and cost notes are here:
 
 [`docs/deployment_and_cost.md`](docs/deployment_and_cost.md)
 
-It maps the same approaches to AWS, GCP, and Azure, and shows where the cost curves cross.
-
-## Five-minute walkthrough
-
-If I were walking through this quickly, I would cover it like this:
-
-1. Here is the support workflow.
-2. Here is why I start with the process, not the model.
-3. Here are the four implementations.
-4. Here is the shared `TriageResult` object.
-5. Here is the comparison table.
-6. Here is the decision: rules/ML for the stable bulk, GenAI/agents for the messy or branching cases.
+That document maps each approach to comparable services across AWS, GCP, and Azure.
 
 ## Repository layout
 
 ```text
-data/generate_dataset.py        builds the synthetic ticket dataset
+data/generate_dataset.py        reproducible synthetic ticket dataset
 src/schema.py                   shared result object, routing, and priority rules
 src/approach_a_rules.py         rules and regex baseline
 src/approach_b_ml.py            TF-IDF, logistic regression, and MLP classifier
-src/image_classifier.py         image classification stand-in
-src/approach_c_genai.py         Claude structured-output version
-src/approach_d_agent.py         LangGraph branching agent
-src/providers.py                same Claude pattern on Anthropic, Bedrock, or Vertex
-src/evaluate.py                 runs the comparison
+src/image_classifier.py         image classification example
+src/approach_c_genai.py         Claude structured-output implementation
+src/approach_d_agent.py         LangGraph branching workflow
+src/providers.py                Claude provider examples for Anthropic, Bedrock, and Vertex
+src/evaluate.py                 comparison runner
 src/tco.py                      cost model
-docs/deployment_and_cost.md     cloud mapping and cost notes
-notebooks/                      walkthrough notebook
+docs/deployment_and_cost.md     cloud mapping and cost discussion
+notebooks/                      project walkthrough
 ```
 
 ## Stack
