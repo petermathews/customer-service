@@ -1,6 +1,6 @@
 """Generate a labelled customer-service ticket dataset.
 
-Why synthetic? Real support queues are proprietary — the exact constraint
+Why synthetic? Real support queues are proprietary, the exact constraint
 behind this whole exercise. So we generate a reproducible stand-in: realistic
 ticket text, some with attachments (receipts and photos), each labelled with
 the intent / sentiment / route a coach would have a team predict. Swapping in a
@@ -20,7 +20,7 @@ import random
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 # Templates per intent. Multiple phrasings give TF-IDF and the neural net
-# something real to learn — the words overlap across intents on purpose, so the
+# something real to learn, the words overlap across intents on purpose, so the
 # task isn't trivially separable (just like real tickets).
 TEMPLATES = {
     "billing_question": [
@@ -34,7 +34,7 @@ TEMPLATES = {
         "I'd like a refund for order {oid}, the item never worked.",
         "Please refund the ${amt} I paid, I'm returning the product.",
         "I want my money back for order {oid}, it's not what I expected.",
-        "Requesting a refund — order {oid} arrived too late to be useful.",
+        "Requesting a refund, order {oid} arrived too late to be useful.",
         "Can I get a refund? I was double charged ${amt}.",
     ],
     "technical_issue": [
@@ -70,7 +70,7 @@ TEMPLATES = {
         "I'm extremely frustrated with the service I've received, this is terrible.",
         "Worst support experience ever, I've been waiting for weeks.",
         "I'm very disappointed and considering cancelling entirely.",
-        "Absolutely fed up — your team keeps ignoring my emails.",
+        "Absolutely fed up, your team keeps ignoring my emails.",
     ],
     "general_inquiry": [
         "Do you offer a student discount on annual plans?",
@@ -81,10 +81,10 @@ TEMPLATES = {
     ],
 }
 
-# Deliberately ambiguous tickets that borrow vocabulary across intents — a
+# Deliberately ambiguous tickets that borrow vocabulary across intents, a
 # refund ticket that talks about charges, a tech issue that mentions the
 # account. Real tickets do this constantly, and it's what keeps intent accuracy
-# realistic (high 80s–90s, not a suspicious 100%). The label is the *primary*
+# realistic (high 80s to 90s, not a suspicious 100%). The label is the *primary*
 # intent a human would route on.
 AMBIGUOUS = {
     "billing_question": [
@@ -105,7 +105,7 @@ AMBIGUOUS = {
     ],
     "complaint": [
         "I've asked for a refund three times and still nothing, this is unacceptable.",
-        "Your app is broken AND nobody answers — I'm beyond frustrated.",
+        "Your app is broken AND nobody answers, I'm beyond frustrated.",
     ],
     "order_status": [
         "I was charged but order {oid} still hasn't shipped, where is it?",
@@ -115,14 +115,14 @@ AMBIGUOUS = {
 for _intent, _extra in AMBIGUOUS.items():
     TEMPLATES[_intent].extend(_extra)
 
-# Shared filler added to many tickets — greetings, sign-offs, and hedges that
+# Shared filler added to many tickets, greetings, sign-offs, and hedges that
 # appear across every intent. This is what real tickets look like, and it's
 # what stops a classifier from trivially memorising templates: the same words
 # show up under different labels, so the model has to learn the signal, not the
 # boilerplate. It pulls accuracy down into a realistic band.
 PREAMBLES = [
-    "", "", "Hi team, ", "Hello, ", "Hey there — ", "Good morning. ",
-    "Thanks for reading this. ", "Quick question — ", "Sorry to bother you, but ",
+    "", "", "Hi team, ", "Hello, ", "Hey there, ", "Good morning. ",
+    "Thanks for reading this. ", "Quick question, ", "Sorry to bother you, but ",
 ]
 SUFFIXES = [
     "", "", " Thanks in advance.", " Please let me know.", " Appreciate any help.",
@@ -151,7 +151,7 @@ ATTACHMENT_RULE = {
 
 
 def make_receipt(order_id: str, amount: float, date: str) -> str:
-    """A tiny text 'receipt' — the document a GenAI/agent approach extracts
+    """A tiny text 'receipt', the document a GenAI/agent approach extracts
     fields from, and that rules can only regex at."""
     return (
         f"ORDER CONFIRMATION\n"
@@ -164,7 +164,7 @@ def make_receipt(order_id: str, amount: float, date: str) -> str:
 
 
 def main() -> None:
-    rng = random.Random(42)  # deterministic — same dataset every run
+    rng = random.Random(42)  # deterministic, same dataset every run
     rows = []
     n_per_intent = 30
 
@@ -187,7 +187,7 @@ def main() -> None:
                 attachment_type = kind
                 if kind == "document":
                     attachment_content = make_receipt(oid, amt, date)
-                else:  # image — store a label the image classifier "sees"
+                else:  # image, store a label the image classifier "sees"
                     attachment_content = rng.choice(
                         ["photo_damaged", "photo_damaged", "photo_intact"]
                     )

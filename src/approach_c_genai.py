@@ -1,14 +1,14 @@
-"""Approach C — GenAI with the Claude API (structured output).
+"""Approach C, GenAI with the Claude API (structured output).
 
-One model call does the whole intake: classify intent + sentiment, and — when a
-receipt is attached — extract the order fields in the *same* call, zero-shot, no
+One model call does the whole intake: classify intent + sentiment, and, when a
+receipt is attached, extract the order fields in the *same* call, zero-shot, no
 labelled training data. This is where the LLM earns its cost: it reads
 free-text it was never trained on and pulls structured data out of a document a
 regex would choke on.
 
 Two things a coach would point out to a team:
   * `messages.parse()` with a Pydantic schema *guarantees* valid structured
-    output — no brittle JSON parsing.
+    output, no brittle JSON parsing.
   * The model tier is a dial. Haiku is cheap and fast and fine for triage;
     Sonnet/Opus cost more but reason better. `MODEL_TIERS` makes that explicit
     so you can run the same code across tiers and compare (see evaluate.py).
@@ -33,7 +33,7 @@ from schema import (
     decide_priority,
 )
 
-# Pricing as published (USD per 1M tokens) — used by the cost comparison.
+# Pricing as published (USD per 1M tokens), used by the cost comparison.
 # Haiku is the default for high-volume triage; the others show the tradeoff.
 MODEL_TIERS = {
     "haiku": {"id": "claude-haiku-4-5", "in": 1.00, "out": 5.00},
@@ -45,7 +45,7 @@ DEFAULT_TIER = "haiku"
 
 class TriageSchema(BaseModel):
     """The structure we force the model to return. Field descriptions are part
-    of the prompt — the model reads them."""
+    of the prompt, the model reads them."""
 
     intent: str = Field(description=f"One of: {', '.join(INTENTS)}")
     sentiment: str = Field(description=f"One of: {', '.join(SENTIMENTS)}")
@@ -76,7 +76,7 @@ class GenAITriager:
             raise ValueError(f"tier must be one of {list(MODEL_TIERS)}")
         self.tier = tier
         self.provider = provider
-        # The same triage code runs on Anthropic, Bedrock, or Vertex — only the
+        # The same triage code runs on Anthropic, Bedrock, or Vertex, only the
         # client and the model-id string change. See providers.py.
         from providers import make_client, resolve_model
 

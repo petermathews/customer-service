@@ -1,32 +1,24 @@
-# Deployment & cost — thinking in AWS / GCP / Azure terms
+# Deployment and cost: thinking in AWS, GCP, and Azure terms
 
-A model's accuracy is half the decision. The other half is **where it runs, how
-it's billed, and what it costs to own** — and that's a cloud question. This is
-the framework I'd have a Fellow team apply before committing to an architecture.
+Accuracy is half the decision. The other half is where the thing runs, how it gets billed, and what it costs to own. That is a cloud question, and it usually decides the architecture more than the model does.
 
-## 1 · Map each approach to a managed service
+## Map each version to a managed service
 
-The same four approaches, mapped to the equivalent managed service on each major
-cloud. Nobody hand-rolls this infrastructure anymore — you pick a tier and a
-provider.
+Nobody hand rolls this infrastructure anymore. You pick a tier and a provider. Here is the same set of versions mapped to the equivalent managed service on each major cloud.
 
-| Approach | AWS | Google Cloud | Azure | Cost model |
+| Version | AWS | Google Cloud | Azure | How it bills |
 | --- | --- | --- | --- | --- |
-| **A · Rules** | Lambda | Cloud Functions / Cloud Run | Azure Functions | Per-invocation (≈ free) |
-| **B · Classic ML** | SageMaker (training + endpoints) | Vertex AI (Training + Endpoints) | Azure Machine Learning | Per instance-hour (provisioned) **or** per-request (serverless) |
-| **B′ · Image model** | SageMaker / Rekognition | Vertex AI / Vision AI | Azure ML / AI Vision | Same as B, or per-image for the prebuilt vision API |
-| **C · GenAI (Claude)** | **Amazon Bedrock** · Claude Platform on AWS | **Vertex AI Model Garden** | **Azure AI Foundry** | Per-token (in/out), Batch ≈ 50% off, prompt caching |
-| **D · Agent** | Bedrock AgentCore / API + tool use | Vertex AI Agent Builder | Azure AI Agent Service | LLM tokens + orchestration compute |
+| Rules | Lambda | Cloud Functions or Cloud Run | Azure Functions | Per invocation, basically free |
+| Classic ML | SageMaker | Vertex AI | Azure Machine Learning | Per instance hour if provisioned, or per request if serverless |
+| Image model | SageMaker or Rekognition | Vertex AI or Vision AI | Azure ML or AI Vision | Same as ML, or per image on the prebuilt vision API |
+| GenAI (Claude) | Amazon Bedrock, or Claude Platform on AWS | Vertex AI Model Garden | Azure AI Foundry | Per token in and out, Batch is about half price, caching helps |
+| Agent | Bedrock AgentCore, or the API plus tools | Vertex AI Agent Builder | Azure AI Agent Service | LLM tokens plus orchestration compute |
 
-> Claude itself is available on **Amazon Bedrock**, **Google Vertex AI**,
-> **Microsoft Foundry**, and **Claude Platform on AWS**, in addition to the
-> Anthropic API — so the GenAI/agent rows aren't locked to one vendor.
+Claude itself runs on Amazon Bedrock, Google Vertex AI, Microsoft Foundry, and the Anthropic API, so the GenAI and agent rows are not locked to one vendor.
 
-## 2 · Same Claude code, three platforms
+## Same Claude code, three platforms
 
-Provider choice is usually a procurement / security / data-residency decision,
-not an engineering one — because the code barely changes. Only the client
-constructor and the model-id string differ (see [`src/providers.py`](../src/providers.py)):
+Which provider you use is usually a procurement, security, or data residency call, not an engineering one, because the code barely changes. Only the client and the model id string differ. See [`src/providers.py`](../src/providers.py).
 
 ```python
 import anthropic
@@ -37,52 +29,44 @@ client = anthropic.AnthropicBedrock(); model = "global.anthropic.claude-haiku-4-
 # Google Vertex AI         pip install "anthropic[vertex]"
 client = anthropic.AnthropicVertex();  model = "claude-haiku-4-5@<version>"
 
-# everything downstream is identical:
+# everything after this is identical:
 client.messages.parse(model=model, max_tokens=512, messages=[...], output_format=TriageSchema)
 ```
 
-**Caveat worth teaching:** feature parity isn't perfect. Managed Agents,
-server-side tools, and the Batches API are **not** on Bedrock or Vertex — there
-you build agents with "API + tool use." Knowing those edges is the difference
-between a slide and a shippable design.
+One thing worth knowing: parity is not perfect. Managed Agents, server side tools, and the Batches API are not on Bedrock or Vertex. There you build agents with the API plus tool use. Knowing those edges is the difference between a slide and something you can actually ship.
 
-## 3 · The cost models cross over (the key lesson)
+## The cost models cross over
 
-Run [`src/tco.py`](../src/tco.py). It models monthly cost three ways:
+This is the part most people skip. Run [`src/tco.py`](../src/tco.py). It models monthly cost three ways.
 
-- **Fixed** — a provisioned ML endpoint costs the same whether 1 or 10M tickets
-  flow through it (you rent the instance 24/7).
-- **Variable** — per-token LLM calls cost \$0 when idle and scale linearly.
-- **Near-free variable** — rules on serverless.
+A trained model on a provisioned endpoint is a fixed cost. You rent the instance around the clock, so it costs the same whether one ticket or ten million flow through it. Cheap per ticket at high volume, wasteful at low volume.
 
-| | 10k/mo | 100k/mo | 1M/mo | 10M/mo |
+Claude calls are billed by the token. Nothing when idle, and the bill scales straight up with volume. Cheap at low volume, expensive at high volume.
+
+Rules on serverless are the near zero floor.
+
+| | 10k a month | 100k a month | 1M a month | 10M a month |
 | --- | ---: | ---: | ---: | ---: |
-| Rules → serverless | \$0.00 | \$0.04 | \$0.40 | \$4 |
-| ML → provisioned endpoint | \$88 | \$88 | \$88 | \$88 |
-| ML → serverless inference | \$0.50 | \$5 | \$50 | \$500 |
-| Claude Haiku (per-token) | \$3.70 | \$37 | \$370 | \$3,700 |
-| Claude Sonnet (per-token) | \$11 | \$111 | \$1,110 | \$11,100 |
-| Claude Opus (per-token) | \$18.50 | \$185 | \$1,850 | \$18,500 |
+| Rules on serverless | $0.00 | $0.04 | $0.40 | $4 |
+| ML on a provisioned endpoint | $88 | $88 | $88 | $88 |
+| ML on serverless inference | $0.50 | $5 | $50 | $500 |
+| Claude Haiku | $3.70 | $37 | $370 | $3,700 |
+| Claude Sonnet | $11 | $111 | $1,110 | $11,100 |
+| Claude Opus | $18.50 | $185 | $1,850 | $18,500 |
 
-**Crossover:** a provisioned ML endpoint (\$88/mo fixed) beats per-token Claude
-Haiku above **~238,000 tickets/month**. Below that, just call the LLM — you're
-not paying for an idle box. Above it, host the trained model.
+The endpoint at $88 a month beats Haiku once you pass roughly 238,000 tickets a month. Below that, just call the LLM, because you are not paying for an idle box. Above it, host the trained model.
 
-> Quality is a *separate* axis. Even where the LLM costs more, it may be the only
-> option that reads a new receipt format or a photo zero-shot — so the real
-> design routes the cheap, stable bulk to ML and the messy tail to the LLM.
+Quality is a separate axis. Even where the LLM costs more, it may be the only option that reads a new receipt format or a photo without retraining, so the real design sends the cheap stable bulk to ML and the messy tail to the LLM.
 
-## 4 · The TCO checklist (build-vs-buy)
+## The cost of ownership checklist
 
-Per-call price is the most visible cost and rarely the biggest. The framework:
+The per call price is the most visible cost and rarely the biggest. Before picking, put a number on each of these:
 
-- **Inference** — per-token or per-instance-hour (above).
-- **Training / fine-tuning** — one-time compute for the ML path; \$0 for zero-shot LLM.
-- **Data & labelling** — often the largest hidden cost of the ML path; \$0 for the LLM.
-- **Engineering & maintenance** — retraining, drift monitoring, prompt upkeep.
-- **Ops** — endpoints to keep up, autoscaling, on-call.
-- **Risk / compliance** — data residency (regional endpoints carry a premium),
-  logging, PII handling, vendor lock-in.
+- Inference, either per token or per instance hour.
+- Training or fine tuning, a one time compute cost for the ML path and zero for the zero shot LLM.
+- Data and labelling, often the largest hidden cost of the ML path and zero for the LLM.
+- Engineering and maintenance, meaning retraining, drift monitoring, prompt upkeep.
+- Ops, meaning endpoints to keep alive, autoscaling, on call.
+- Risk and compliance, meaning data residency (regional endpoints cost a premium), logging, PII, and vendor lock in.
 
-The cheapest *per-call* option is frequently the most expensive to *own*. Making
-a team put a number on each row — not just the API price — is the coaching.
+The cheapest option per call is often the most expensive to own. Making a team put a number on every row, and name the actual service they would deploy on, is the work.

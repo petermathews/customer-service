@@ -18,10 +18,10 @@ T0100,"Hi team, The package arrived and the screen is cracked, see the photo. Pl
 T0000,"Hello, I was charged $43.60 this month but my plan should be cheaper, can you explain the bill? Please let me know.",billing_question,neutral,none,
 T0172,"Good morning. Someone may have accessed my account, I can't log in anymore. Thanks in advance.",account_access,neutral,none,
 T0151,"Someone may have accessed my account, I can't log in anymore. Please let me know.",account_access,neutral,none,
-T0024,Hey there — Can you break down what the $124.04 fee on my account is for? This is pretty urgent for me.,billing_question,neutral,none,
-T0238,Quick question — Can I change my plan in the middle of a billing cycle? This is pretty urgent for me.,general_inquiry,neutral,none,
-T0197,Hey there — I'm very disappointed and considering cancelling entirely.,complaint,negative,none,
-T0198,Absolutely fed up — your team keeps ignoring my emails.,complaint,negative,none,
+T0024,"Hey there, Can you break down what the $124.04 fee on my account is for? This is pretty urgent for me.",billing_question,neutral,none,
+T0238,"Quick question, Can I change my plan in the middle of a billing cycle? This is pretty urgent for me.",general_inquiry,neutral,none,
+T0197,"Hey there, I'm very disappointed and considering cancelling entirely.",complaint,negative,none,
+T0198,"Absolutely fed up, your team keeps ignoring my emails.",complaint,negative,none,
 T0042,"The charge on my bill is wrong, I need that $21.06 returned for order A19508.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A19508
 Date: 2026-05-28
@@ -35,11 +35,11 @@ T0224,Do you ship internationally to Canada?,general_inquiry,neutral,none,
 T0176,"Hi team, There's an error every time I try to log in and the page crashes. I've been a customer for years.",account_access,negative,none,
 T0159,Good morning. I forgot my password and the recovery link isn't working. Please let me know.,account_access,negative,none,
 T0052,"Good morning. Please refund the $213.79 I paid, I'm returning the product. This is pretty urgent for me.",refund_request,neutral,none,
-T0062,Hey there — Getting a 500 error when I try to save my settings. This is pretty urgent for me.,technical_issue,neutral,none,
-T0012,Hey there — I see a refund was supposed to come back but I was charged $200.62 again.,billing_question,neutral,none,
+T0062,"Hey there, Getting a 500 error when I try to save my settings. This is pretty urgent for me.",technical_issue,neutral,none,
+T0012,"Hey there, I see a refund was supposed to come back but I was charged $200.62 again.",billing_question,neutral,none,
 T0087,"Hi team, The dashboard crashes whenever I open my account settings.",technical_issue,negative,none,
 T0001,Thanks for reading this. Why is there an extra charge of $168.55 on my latest invoice?,billing_question,neutral,none,
-T0058,"Hey there — I'd like a refund for order A77033, the item never worked.",refund_request,neutral,document,"ORDER CONFIRMATION
+T0058,"Hey there, I'd like a refund for order A77033, the item never worked.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A77033
 Date: 2026-05-16
 Item: Wireless Headphones
@@ -52,19 +52,19 @@ Item: Wireless Headphones
 Total: $227.86
 Thank you for your purchase!"
 T0182,"Worst support experience ever, I've been waiting for weeks. Thanks in advance.",complaint,negative,none,
-T0056,"Hey there — The charge on my bill is wrong, I need that $92.18 returned for order A80282. Thanks in advance.",refund_request,neutral,none,
+T0056,"Hey there, The charge on my bill is wrong, I need that $92.18 returned for order A80282. Thanks in advance.",refund_request,neutral,none,
 T0218,Can I change my plan in the middle of a billing cycle? This is pretty urgent for me.,general_inquiry,positive,none,
 T0168,"I think my account was hacked, please help me secure it. Thanks in advance.",account_access,neutral,none,
-T0204,Hey there — I'm very disappointed and considering cancelling entirely. Appreciate any help.,complaint,negative,none,
+T0204,"Hey there, I'm very disappointed and considering cancelling entirely. Appreciate any help.",complaint,negative,none,
 T0179,"Good morning. Someone may have accessed my account, I can't log in anymore.",account_access,negative,none,
 T0046,"Sorry to bother you, but I want my money back for order A54942, it's not what I expected. I've been a customer for years.",refund_request,neutral,none,
 T0149,"Sorry to bother you, but Can you tell me the shipping status of order A19869? Looking forward to your reply.",order_status,neutral,none,
-T0211,Quick question — What are your support hours over the holidays?,general_inquiry,neutral,none,
-T0118,"Quick question — The product is scratched badly out of the box, photo attached. This is pretty urgent for me.",damaged_product,negative,image,photo_damaged
+T0211,"Quick question, What are your support hours over the holidays?",general_inquiry,neutral,none,
+T0118,"Quick question, The product is scratched badly out of the box, photo attached. This is pretty urgent for me.",damaged_product,negative,image,photo_damaged
 T0128,Thanks for reading this. Can you tell me the shipping status of order A34727? Please let me know.,order_status,neutral,none,
 T0210,Thanks for reading this. Do you offer a student discount on annual plans? Thanks in advance.,general_inquiry,neutral,none,
-T0097,"Hey there — Item showed up broken, attaching a picture of the damage. Please let me know.",damaged_product,negative,image,photo_damaged
-T0184,"Sorry to bother you, but Absolutely fed up — your team keeps ignoring my emails.",complaint,negative,none,
+T0097,"Hey there, Item showed up broken, attaching a picture of the damage. Please let me know.",damaged_product,negative,image,photo_damaged
+T0184,"Sorry to bother you, but Absolutely fed up, your team keeps ignoring my emails.",complaint,negative,none,
 T0048,"Sorry to bother you, but Can I get a refund? I was double charged $235.54. This is pretty urgent for me.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A93507
 Date: 2026-02-24
@@ -81,19 +81,19 @@ T0175,"I think my account was hacked, please help me secure it. Appreciate any h
 T0009,"Good morning. I don't understand my billing statement, there's a line item I didn't expect. Looking forward to your reply.",billing_question,neutral,none,
 T0162,There's an error every time I try to log in and the page crashes. Thanks in advance.,account_access,negative,none,
 T0096,"Sorry to bother you, but My order A21221 came damaged, there's a dent on the side. Please let me know.",damaged_product,neutral,image,photo_intact
-T0013,"Quick question — There's a charge and a credit on the same statement, can you explain the bill? This is pretty urgent for me.",billing_question,negative,none,
+T0013,"Quick question, There's a charge and a credit on the same statement, can you explain the bill? This is pretty urgent for me.",billing_question,negative,none,
 T0065,I can't access my account because the app keeps erroring out on login. Please let me know.,technical_issue,neutral,none,
-T0183,Quick question — I'm very disappointed and considering cancelling entirely. This is pretty urgent for me.,complaint,neutral,none,
-T0193,"Hi team, Your app is broken AND nobody answers — I'm beyond frustrated.",complaint,negative,none,
+T0183,"Quick question, I'm very disappointed and considering cancelling entirely. This is pretty urgent for me.",complaint,neutral,none,
+T0193,"Hi team, Your app is broken AND nobody answers, I'm beyond frustrated.",complaint,negative,none,
 T0234,Thanks for reading this. Do you ship internationally to Canada? This is pretty urgent for me.,general_inquiry,positive,none,
 T0083,Thanks for reading this. Getting a 500 error when I try to save my settings. Appreciate any help.,technical_issue,neutral,none,
-T0069,Quick question — Getting a 500 error when I try to save my settings.,technical_issue,neutral,none,
-T0102,"Hey there — Item showed up broken, attaching a picture of the damage.",damaged_product,negative,image,photo_intact
+T0069,"Quick question, Getting a 500 error when I try to save my settings.",technical_issue,neutral,none,
+T0102,"Hey there, Item showed up broken, attaching a picture of the damage.",damaged_product,negative,image,photo_intact
 T0004,"Hi team, My subscription price went up, what changed on my billing? Please let me know.",billing_question,neutral,none,
-T0230,Quick question — Do you offer a student discount on annual plans? I've been a customer for years.,general_inquiry,positive,none,
-T0086,Quick question — I can't access my account because the app keeps erroring out on login.,technical_issue,neutral,none,
+T0230,"Quick question, Do you offer a student discount on annual plans? I've been a customer for years.",general_inquiry,positive,none,
+T0086,"Quick question, I can't access my account because the app keeps erroring out on login.",technical_issue,neutral,none,
 T0153,"My two-factor codes stopped working, I can't get in.",account_access,neutral,none,
-T0209,"Hey there — I'm extremely frustrated with the service I've received, this is terrible.",complaint,negative,none,
+T0209,"Hey there, I'm extremely frustrated with the service I've received, this is terrible.",complaint,negative,none,
 T0061,"Sorry to bother you, but I can't get the export feature to work, it just spins forever. Thanks in advance.",technical_issue,negative,none,
 T0091,"My order A94874 came damaged, there's a dent on the side. This is pretty urgent for me.",damaged_product,negative,image,photo_damaged
 T0037,"Good morning. I'd like a refund for order A17665, the item never worked.",refund_request,negative,document,"ORDER CONFIRMATION
@@ -111,12 +111,12 @@ Item: Wireless Headphones
 Total: $77.96
 Thank you for your purchase!"
 T0026,I see a refund was supposed to come back but I was charged $101.53 again. Please let me know.,billing_question,neutral,none,
-T0142,Hey there — Can you tell me the shipping status of order A23979? Appreciate any help.,order_status,neutral,none,
+T0142,"Hey there, Can you tell me the shipping status of order A23979? Appreciate any help.",order_status,neutral,none,
 T0160,"Hello, My two-factor codes stopped working, I can't get in. Please let me know.",account_access,neutral,none,
 T0123,"Hello, When will order A45838 be delivered? I've been a customer for years.",order_status,negative,none,
-T0003,Quick question — Can you break down what the $173.99 fee on my account is for? Appreciate any help.,billing_question,neutral,none,
+T0003,"Quick question, Can you break down what the $173.99 fee on my account is for? Appreciate any help.",billing_question,neutral,none,
 T0005,Good morning. I see a refund was supposed to come back but I was charged $39.50 again. Appreciate any help.,billing_question,neutral,none,
-T0072,Quick question — I can't access my account because the app keeps erroring out on login. Appreciate any help.,technical_issue,negative,none,
+T0072,"Quick question, I can't access my account because the app keeps erroring out on login. Appreciate any help.",technical_issue,negative,none,
 T0043,"Hello, I was billed twice, please refund order A44760. Looking forward to your reply.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A44760
 Date: 2026-03-12
@@ -126,8 +126,8 @@ Thank you for your purchase!"
 T0077,Thanks for reading this. The sync between my devices stopped working yesterday. I've been a customer for years.,technical_issue,negative,none,
 T0139,"I was charged but order A70443 still hasn't shipped, where is it? I've been a customer for years.",order_status,neutral,none,
 T0085,Login page loads but the buttons don't respond at all. Please let me know.,technical_issue,negative,none,
-T0109,Hey there — Received a torn and damaged unit for order A87832. Appreciate any help.,damaged_product,neutral,none,
-T0161,"Hey there — I think my account was hacked, please help me secure it. Thanks in advance.",account_access,negative,none,
+T0109,"Hey there, Received a torn and damaged unit for order A87832. Appreciate any help.",damaged_product,neutral,none,
+T0161,"Hey there, I think my account was hacked, please help me secure it. Thanks in advance.",account_access,negative,none,
 T0120,Where is my order A67424? It was supposed to arrive last week. Please let me know.,order_status,negative,none,
 T0107,"Item showed up broken, attaching a picture of the damage.",damaged_product,negative,image,photo_damaged
 T0082,"I can't get the export feature to work, it just spins forever. Appreciate any help.",technical_issue,neutral,none,
@@ -137,19 +137,19 @@ T0068,"I can't get the export feature to work, it just spins forever.",technical
 T0078,"Sorry to bother you, but Login page loads but the buttons don't respond at all. Please let me know.",technical_issue,neutral,none,
 T0108,"Sorry to bother you, but The product is scratched badly out of the box, photo attached.",damaged_product,negative,image,photo_damaged
 T0239,Thanks for reading this. Do you ship internationally to Canada? Appreciate any help.,general_inquiry,positive,none,
-T0117,"Hey there — Item showed up broken, attaching a picture of the damage. Looking forward to your reply.",damaged_product,negative,none,
+T0117,"Hey there, Item showed up broken, attaching a picture of the damage. Looking forward to your reply.",damaged_product,negative,none,
 T0152,"Hello, I forgot my password and the recovery link isn't working.",account_access,neutral,none,
 T0137,Thanks for reading this. When will order A59131 be delivered? Thanks in advance.,order_status,neutral,none,
 T0121,Thanks for reading this. Can you tell me the shipping status of order A30758?,order_status,neutral,none,
-T0025,"Hey there — My subscription price went up, what changed on my billing? This is pretty urgent for me.",billing_question,negative,none,
-T0186,Your app is broken AND nobody answers — I'm beyond frustrated. Please let me know.,complaint,negative,none,
+T0025,"Hey there, My subscription price went up, what changed on my billing? This is pretty urgent for me.",billing_question,negative,none,
+T0186,"Your app is broken AND nobody answers, I'm beyond frustrated. Please let me know.",complaint,negative,none,
 T0010,"Hi team, Can you break down what the $78.00 fee on my account is for? Please let me know.",billing_question,neutral,none,
 T0226,Thanks for reading this. What are your support hours over the holidays? Thanks in advance.,general_inquiry,positive,none,
 T0110,"Hello, The package arrived and the screen is cracked, see the photo. This is pretty urgent for me.",damaged_product,negative,image,photo_intact
-T0158,"Quick question — Someone may have accessed my account, I can't log in anymore.",account_access,negative,none,
+T0158,"Quick question, Someone may have accessed my account, I can't log in anymore.",account_access,negative,none,
 T0028,"I was charged $175.43 this month but my plan should be cheaper, can you explain the bill?",billing_question,neutral,none,
 T0090,"Good morning. The package arrived and the screen is cracked, see the photo. This is pretty urgent for me.",damaged_product,neutral,image,photo_intact
-T0041,Hey there — Can I get a refund? I was double charged $71.75. I've been a customer for years.,refund_request,neutral,none,
+T0041,"Hey there, Can I get a refund? I was double charged $71.75. I've been a customer for years.",refund_request,neutral,none,
 T0020,"Hello, There's a charge and a credit on the same statement, can you explain the bill? Thanks in advance.",billing_question,neutral,none,
 T0021,"Good morning. I was charged $138.20 this month but my plan should be cheaper, can you explain the bill? I've been a customer for years.",billing_question,neutral,none,
 T0038,"Please refund the $222.18 I paid, I'm returning the product.",refund_request,negative,document,"ORDER CONFIRMATION
@@ -166,32 +166,32 @@ T0227,"Sorry to bother you, but Is there a mobile app available for Android?",ge
 T0111,"My order A29528 came damaged, there's a dent on the side. Thanks in advance.",damaged_product,negative,image,photo_intact
 T0064,"Hi team, Login page loads but the buttons don't respond at all.",technical_issue,neutral,none,
 T0055,"Sorry to bother you, but Can I get a refund? I was double charged $232.68. This is pretty urgent for me.",refund_request,neutral,none,
-T0150,Quick question — I'm locked out of my account and the reset email never arrives. Looking forward to your reply.,account_access,neutral,none,
-T0212,Hey there — Is there a mobile app available for Android? I've been a customer for years.,general_inquiry,neutral,none,
+T0150,"Quick question, I'm locked out of my account and the reset email never arrives. Looking forward to your reply.",account_access,neutral,none,
+T0212,"Hey there, Is there a mobile app available for Android? I've been a customer for years.",general_inquiry,neutral,none,
 T0023,"Sorry to bother you, but I don't understand my billing statement, there's a line item I didn't expect. Thanks in advance.",billing_question,neutral,none,
 T0075,"Hi team, I can't get the export feature to work, it just spins forever. Please let me know.",technical_issue,negative,none,
-T0232,Hey there — Is there a mobile app available for Android? This is pretty urgent for me.,general_inquiry,positive,none,
+T0232,"Hey there, Is there a mobile app available for Android? This is pretty urgent for me.",general_inquiry,positive,none,
 T0070,"Hi team, The sync between my devices stopped working yesterday. I've been a customer for years.",technical_issue,neutral,none,
-T0185,"Quick question — I've asked for a refund three times and still nothing, this is unacceptable. Appreciate any help.",complaint,negative,none,
+T0185,"Quick question, I've asked for a refund three times and still nothing, this is unacceptable. Appreciate any help.",complaint,negative,none,
 T0106,"Sorry to bother you, but My order A89471 came damaged, there's a dent on the side. This is pretty urgent for me.",damaged_product,negative,none,
-T0221,Quick question — What are your support hours over the holidays? I've been a customer for years.,general_inquiry,positive,none,
+T0221,"Quick question, What are your support hours over the holidays? I've been a customer for years.",general_inquiry,positive,none,
 T0235,"Hi team, Do you offer a student discount on annual plans? I've been a customer for years.",general_inquiry,positive,none,
-T0215,Quick question — Do you offer a student discount on annual plans? Looking forward to your reply.,general_inquiry,positive,none,
+T0215,"Quick question, Do you offer a student discount on annual plans? Looking forward to your reply.",general_inquiry,positive,none,
 T0144,"Hello, When will order A40162 be delivered? Appreciate any help.",order_status,negative,none,
 T0170,"Sorry to bother you, but App keeps failing when I enter my password, I'm locked out. Please let me know.",account_access,neutral,none,
-T0133,Quick question — Paid for express shipping on A98389 and tracking shows nothing.,order_status,negative,none,
+T0133,"Quick question, Paid for express shipping on A98389 and tracking shows nothing.",order_status,negative,none,
 T0194,"Hi team, This is the third time I've contacted you and nobody has helped. Unacceptable. Please let me know.",complaint,negative,none,
 T0219,"Hello, Do you ship internationally to Canada?",general_inquiry,neutral,none,
 T0236,What are your support hours over the holidays? This is pretty urgent for me.,general_inquiry,neutral,none,
 T0104,Received a torn and damaged unit for order A34164.,damaged_product,negative,image,photo_intact
-T0105,"Hey there — The package arrived and the screen is cracked, see the photo.",damaged_product,negative,image,photo_damaged
+T0105,"Hey there, The package arrived and the screen is cracked, see the photo.",damaged_product,negative,image,photo_damaged
 T0134,"Hello, Where is my order A18968? It was supposed to arrive last week.",order_status,neutral,none,
-T0122,"Quick question — My tracking hasn't updated in days, what's going on with A24871? Appreciate any help.",order_status,negative,none,
+T0122,"Quick question, My tracking hasn't updated in days, what's going on with A24871? Appreciate any help.",order_status,negative,none,
 T0196,"Good morning. Worst support experience ever, I've been waiting for weeks. Looking forward to your reply.",complaint,negative,none,
 T0079,Thanks for reading this. I can't access my account because the app keeps erroring out on login. Looking forward to your reply.,technical_issue,neutral,none,
 T0164,"Sorry to bother you, but I'm locked out of my account and the reset email never arrives.",account_access,negative,none,
 T0167,"My two-factor codes stopped working, I can't get in. I've been a customer for years.",account_access,neutral,none,
-T0033,Requesting a refund — order A65296 arrived too late to be useful. I've been a customer for years.,refund_request,neutral,document,"ORDER CONFIRMATION
+T0033,"Requesting a refund, order A65296 arrived too late to be useful. I've been a customer for years.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A65296
 Date: 2026-04-17
 Item: Wireless Headphones
@@ -206,9 +206,9 @@ T0157,I'm locked out of my account and the reset email never arrives. Looking fo
 T0190,Thanks for reading this. I'm very disappointed and considering cancelling entirely. This is pretty urgent for me.,complaint,negative,none,
 T0126,"Hi team, Paid for express shipping on A49132 and tracking shows nothing. I've been a customer for years.",order_status,negative,none,
 T0225,"Hello, Do you offer a student discount on annual plans? Thanks in advance.",general_inquiry,neutral,none,
-T0216,Hey there — What are your support hours over the holidays?,general_inquiry,neutral,none,
+T0216,"Hey there, What are your support hours over the holidays?",general_inquiry,neutral,none,
 T0174,"Sorry to bother you, but My two-factor codes stopped working, I can't get in. Looking forward to your reply.",account_access,negative,none,
-T0207,Your app is broken AND nobody answers — I'm beyond frustrated. This is pretty urgent for me.,complaint,negative,none,
+T0207,"Your app is broken AND nobody answers, I'm beyond frustrated. This is pretty urgent for me.",complaint,negative,none,
 T0057,"Good morning. I was billed twice, please refund order A44795. Looking forward to your reply.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A44795
 Date: 2026-05-23
@@ -218,10 +218,10 @@ Thank you for your purchase!"
 T0130,When will order A14852 be delivered? I've been a customer for years.,order_status,neutral,none,
 T0213,Good morning. Can I change my plan in the middle of a billing cycle? I've been a customer for years.,general_inquiry,neutral,none,
 T0169,Thanks for reading this. There's an error every time I try to log in and the page crashes. Appreciate any help.,account_access,neutral,none,
-T0228,Hey there — Can I change my plan in the middle of a billing cycle?,general_inquiry,neutral,none,
+T0228,"Hey there, Can I change my plan in the middle of a billing cycle?",general_inquiry,neutral,none,
 T0076,Thanks for reading this. Getting a 500 error when I try to save my settings.,technical_issue,negative,none,
 T0074,Good morning. The app keeps crashing every time I open the dashboard. Looking forward to your reply.,technical_issue,neutral,none,
-T0138,Quick question — Has my package shipped yet? Order number is A32946. Thanks in advance.,order_status,neutral,none,
+T0138,"Quick question, Has my package shipped yet? Order number is A32946. Thanks in advance.",order_status,neutral,none,
 T0140,Good morning. Paid for express shipping on A98815 and tracking shows nothing. Appreciate any help.,order_status,negative,none,
 T0016,"Hi team, I don't understand my billing statement, there's a line item I didn't expect. Thanks in advance.",billing_question,negative,none,
 T0088,Thanks for reading this. The app keeps crashing every time I open the dashboard. This is pretty urgent for me.,technical_issue,neutral,none,
@@ -235,7 +235,7 @@ Item: Wireless Headphones
 Total: $174.48
 Thank you for your purchase!"
 T0206,"Sorry to bother you, but I've asked for a refund three times and still nothing, this is unacceptable. This is pretty urgent for me.",complaint,negative,none,
-T0018,"Hey there — My subscription price went up, what changed on my billing? Looking forward to your reply.",billing_question,neutral,none,
+T0018,"Hey there, My subscription price went up, what changed on my billing? Looking forward to your reply.",billing_question,neutral,none,
 T0034,"Hello, Can I get a refund? I was double charged $239.84. Thanks in advance.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A95477
 Date: 2026-01-12
@@ -251,8 +251,8 @@ Thank you for your purchase!"
 T0051,"Thanks for reading this. I'd like a refund for order A42706, the item never worked. Thanks in advance.",refund_request,negative,none,
 T0125,"I was charged but order A64387 still hasn't shipped, where is it? Appreciate any help.",order_status,negative,none,
 T0073,"Hello, The dashboard crashes whenever I open my account settings. Appreciate any help.",technical_issue,neutral,none,
-T0156,"Hey there — App keeps failing when I enter my password, I'm locked out.",account_access,neutral,none,
-T0054,Requesting a refund — order A70332 arrived too late to be useful. Please let me know.,refund_request,neutral,document,"ORDER CONFIRMATION
+T0156,"Hey there, App keeps failing when I enter my password, I'm locked out.",account_access,neutral,none,
+T0054,"Requesting a refund, order A70332 arrived too late to be useful. Please let me know.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A70332
 Date: 2026-02-17
 Item: Wireless Headphones
@@ -269,20 +269,20 @@ Item: Wireless Headphones
 Total: $146.34
 Thank you for your purchase!"
 T0143,"My tracking hasn't updated in days, what's going on with A96275? I've been a customer for years.",order_status,neutral,none,
-T0099,Hey there — Received a torn and damaged unit for order A82140. Appreciate any help.,damaged_product,negative,image,photo_intact
+T0099,"Hey there, Received a torn and damaged unit for order A82140. Appreciate any help.",damaged_product,negative,image,photo_intact
 T0132,"Thanks for reading this. I was charged but order A71537 still hasn't shipped, where is it?",order_status,neutral,none,
 T0127,Thanks for reading this. Where is my order A73483? It was supposed to arrive last week. I've been a customer for years.,order_status,neutral,none,
-T0047,Requesting a refund — order A16658 arrived too late to be useful.,refund_request,neutral,none,
+T0047,"Requesting a refund, order A16658 arrived too late to be useful.",refund_request,neutral,none,
 T0188,"Thanks for reading this. I'm extremely frustrated with the service I've received, this is terrible. Please let me know.",complaint,negative,none,
 T0006,"Sorry to bother you, but There's a charge and a credit on the same statement, can you explain the bill? Appreciate any help.",billing_question,negative,none,
 T0029,"Hello, Why is there an extra charge of $132.63 on my latest invoice? Thanks in advance.",billing_question,negative,none,
 T0063,Good morning. The sync between my devices stopped working yesterday. I've been a customer for years.,technical_issue,neutral,none,
-T0071,Quick question — Login page loads but the buttons don't respond at all. This is pretty urgent for me.,technical_issue,neutral,none,
-T0166,Hey there — I forgot my password and the recovery link isn't working. I've been a customer for years.,account_access,negative,none,
-T0080,Quick question — The dashboard crashes whenever I open my account settings. Thanks in advance.,technical_issue,neutral,none,
+T0071,"Quick question, Login page loads but the buttons don't respond at all. This is pretty urgent for me.",technical_issue,neutral,none,
+T0166,"Hey there, I forgot my password and the recovery link isn't working. I've been a customer for years.",account_access,negative,none,
+T0080,"Quick question, The dashboard crashes whenever I open my account settings. Thanks in advance.",technical_issue,neutral,none,
 T0101,"My order A46241 came damaged, there's a dent on the side. Please let me know.",damaged_product,negative,image,photo_damaged
 T0214,Thanks for reading this. Do you ship internationally to Canada? Thanks in advance.,general_inquiry,neutral,none,
-T0135,Quick question — Can you tell me the shipping status of order A22903? Thanks in advance.,order_status,negative,none,
+T0135,"Quick question, Can you tell me the shipping status of order A22903? Thanks in advance.",order_status,negative,none,
 T0035,"Thanks for reading this. The charge on my bill is wrong, I need that $210.09 returned for order A38016.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A38016
 Date: 2026-01-15
@@ -290,12 +290,12 @@ Item: Wireless Headphones
 Total: $210.09
 Thank you for your purchase!"
 T0146,"I was charged but order A14373 still hasn't shipped, where is it? Appreciate any help.",order_status,neutral,none,
-T0237,Hey there — Is there a mobile app available for Android? Looking forward to your reply.,general_inquiry,neutral,none,
+T0237,"Hey there, Is there a mobile app available for Android? Looking forward to your reply.",general_inquiry,neutral,none,
 T0195,"I'm extremely frustrated with the service I've received, this is terrible. Thanks in advance.",complaint,neutral,none,
-T0113,"Hey there — The product is scratched badly out of the box, photo attached.",damaged_product,negative,image,photo_intact
-T0095,"Hey there — The package arrived and the screen is cracked, see the photo.",damaged_product,neutral,none,
+T0113,"Hey there, The product is scratched badly out of the box, photo attached.",damaged_product,negative,image,photo_intact
+T0095,"Hey there, The package arrived and the screen is cracked, see the photo.",damaged_product,neutral,none,
 T0094,Received a torn and damaged unit for order A84691. I've been a customer for years.,damaged_product,negative,image,photo_damaged
-T0115,"Quick question — The package arrived and the screen is cracked, see the photo.",damaged_product,negative,image,photo_damaged
+T0115,"Quick question, The package arrived and the screen is cracked, see the photo.",damaged_product,negative,image,photo_damaged
 T0223,"Hello, Can I change my plan in the middle of a billing cycle? Appreciate any help.",general_inquiry,neutral,none,
 T0039,"I want my money back for order A18907, it's not what I expected. Please let me know.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A18907
@@ -307,12 +307,12 @@ T0154,"Hi team, I think my account was hacked, please help me secure it. This is
 T0220,"Hi team, Do you offer a student discount on annual plans? Thanks in advance.",general_inquiry,neutral,none,
 T0145,Has my package shipped yet? Order number is A96400. Appreciate any help.,order_status,neutral,none,
 T0098,"Sorry to bother you, but The product is scratched badly out of the box, photo attached. Looking forward to your reply.",damaged_product,negative,none,
-T0092,"Hey there — Item showed up broken, attaching a picture of the damage. I've been a customer for years.",damaged_product,negative,image,photo_intact
-T0233,Hey there — Can I change my plan in the middle of a billing cycle? Looking forward to your reply.,general_inquiry,neutral,none,
+T0092,"Hey there, Item showed up broken, attaching a picture of the damage. I've been a customer for years.",damaged_product,negative,image,photo_intact
+T0233,"Hey there, Can I change my plan in the middle of a billing cycle? Looking forward to your reply.",general_inquiry,neutral,none,
 T0165,"Someone may have accessed my account, I can't log in anymore. I've been a customer for years.",account_access,negative,none,
 T0199,"Thanks for reading this. I've asked for a refund three times and still nothing, this is unacceptable. I've been a customer for years.",complaint,negative,none,
-T0060,Hey there — The app keeps crashing every time I open the dashboard. Appreciate any help.,technical_issue,neutral,none,
-T0017,Quick question — Can you break down what the $150.81 fee on my account is for? Appreciate any help.,billing_question,negative,none,
+T0060,"Hey there, The app keeps crashing every time I open the dashboard. Appreciate any help.",technical_issue,neutral,none,
+T0017,"Quick question, Can you break down what the $150.81 fee on my account is for? Appreciate any help.",billing_question,negative,none,
 T0032,"Hello, I want my money back for order A54473, it's not what I expected. Please let me know.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A54473
 Date: 2026-01-17
@@ -321,31 +321,31 @@ Total: $195.93
 Thank you for your purchase!"
 T0008,"Hello, Why is there an extra charge of $69.37 on my latest invoice?",billing_question,neutral,none,
 T0112,"Thanks for reading this. Item showed up broken, attaching a picture of the damage. Appreciate any help.",damaged_product,neutral,image,photo_damaged
-T0200,Good morning. Your app is broken AND nobody answers — I'm beyond frustrated. I've been a customer for years.,complaint,negative,none,
+T0200,"Good morning. Your app is broken AND nobody answers, I'm beyond frustrated. I've been a customer for years.",complaint,negative,none,
 T0229,Good morning. Do you ship internationally to Canada? Thanks in advance.,general_inquiry,neutral,none,
 T0155,Thanks for reading this. There's an error every time I try to log in and the page crashes. Thanks in advance.,account_access,neutral,none,
 T0217,Thanks for reading this. Is there a mobile app available for Android?,general_inquiry,neutral,none,
-T0036,"Quick question — I was billed twice, please refund order A69638. Thanks in advance.",refund_request,negative,document,"ORDER CONFIRMATION
+T0036,"Quick question, I was billed twice, please refund order A69638. Thanks in advance.",refund_request,negative,document,"ORDER CONFIRMATION
 Order #: A69638
 Date: 2026-06-27
 Item: Wireless Headphones
 Total: $82.04
 Thank you for your purchase!"
 T0007,"Hello, I was charged $214.68 this month but my plan should be cheaper, can you explain the bill?",billing_question,neutral,none,
-T0040,"Sorry to bother you, but Requesting a refund — order A91183 arrived too late to be useful. Looking forward to your reply.",refund_request,neutral,document,"ORDER CONFIRMATION
+T0040,"Sorry to bother you, but Requesting a refund, order A91183 arrived too late to be useful. Looking forward to your reply.",refund_request,neutral,document,"ORDER CONFIRMATION
 Order #: A91183
 Date: 2026-06-28
 Item: Wireless Headphones
 Total: $37.12
 Thank you for your purchase!"
 T0173,Thanks for reading this. I forgot my password and the recovery link isn't working.,account_access,neutral,none,
-T0191,Quick question — Absolutely fed up — your team keeps ignoring my emails. Looking forward to your reply.,complaint,negative,none,
-T0205,Good morning. Absolutely fed up — your team keeps ignoring my emails. Appreciate any help.,complaint,neutral,none,
+T0191,"Quick question, Absolutely fed up, your team keeps ignoring my emails. Looking forward to your reply.",complaint,negative,none,
+T0205,"Good morning. Absolutely fed up, your team keeps ignoring my emails. Appreciate any help.",complaint,neutral,none,
 T0131,Thanks for reading this. Has my package shipped yet? Order number is A78937. Thanks in advance.,order_status,neutral,none,
-T0093,"Hey there — The product is scratched badly out of the box, photo attached. I've been a customer for years.",damaged_product,negative,none,
+T0093,"Hey there, The product is scratched badly out of the box, photo attached. I've been a customer for years.",damaged_product,negative,none,
 T0103,"The product is scratched badly out of the box, photo attached. Appreciate any help.",damaged_product,negative,image,photo_damaged
 T0163,"Good morning. App keeps failing when I enter my password, I'm locked out.",account_access,negative,none,
-T0171,Quick question — I'm locked out of my account and the reset email never arrives. This is pretty urgent for me.,account_access,neutral,none,
-T0019,Hey there — I see a refund was supposed to come back but I was charged $115.08 again. Thanks in advance.,billing_question,negative,none,
+T0171,"Quick question, I'm locked out of my account and the reset email never arrives. This is pretty urgent for me.",account_access,neutral,none,
+T0019,"Hey there, I see a refund was supposed to come back but I was charged $115.08 again. Thanks in advance.",billing_question,negative,none,
 T0014,"Sorry to bother you, but I was charged $50.57 this month but my plan should be cheaper, can you explain the bill? Appreciate any help.",billing_question,negative,none,
 T0202,"Sorry to bother you, but I'm extremely frustrated with the service I've received, this is terrible. Thanks in advance.",complaint,negative,none,

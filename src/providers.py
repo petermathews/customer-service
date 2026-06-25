@@ -1,15 +1,15 @@
-"""Provider portability — the same Claude code on Anthropic, AWS, or GCP.
+"""Provider portability, the same Claude code on Anthropic, AWS, or GCP.
 
 A coach should be fluent in *where* a model runs, not just which model. Claude
-is reachable three ways that share the exact same Messages API — only the client
+is reachable three ways that share the exact same Messages API, only the client
 constructor and the model-id string change:
 
     Anthropic API   anthropic.Anthropic()              model="claude-haiku-4-5"
     Amazon Bedrock  anthropic.AnthropicBedrock()       model="global.anthropic.claude-haiku-4-5-20251001-v1:0"
     Google Vertex   anthropic.AnthropicVertex()        model="claude-haiku-4-5@<version>"
 
-Everything downstream — `messages.parse()`, the Pydantic schema, the response
-handling in approach_c — is identical. That portability is the point: you pick
+Everything downstream, `messages.parse()`, the Pydantic schema, the response
+handling in approach_c, is identical. That portability is the point: you pick
 the platform on procurement, security, and billing grounds, not by rewriting
 code.
 
@@ -18,13 +18,13 @@ Install extras as needed:
     pip install "anthropic[vertex]"      # GCP
 
 NOTE: exact Bedrock/Vertex model strings are region- and version-specific and
-change over time. The maps below are illustrative — confirm the current id in
+change over time. The maps below are illustrative, confirm the current id in
 the AWS Bedrock / GCP Model Garden console for your region before relying on it.
 """
 
 from __future__ import annotations
 
-# Anthropic-direct model ids (authoritative — these are what approach_c uses).
+# Anthropic-direct model ids (authoritative, these are what approach_c uses).
 ANTHROPIC_IDS = {
     "haiku": "claude-haiku-4-5",
     "sonnet": "claude-sonnet-4-6",
@@ -39,7 +39,7 @@ BEDROCK_IDS = {
     "opus": "global.anthropic.claude-opus-4-8",  # confirm current id in console
 }
 
-# Google Vertex ids use an `@version` suffix. Illustrative — confirm in Model
+# Google Vertex ids use an `@version` suffix. Illustrative, confirm in Model
 # Garden for your region.
 VERTEX_IDS = {
     "haiku": "claude-haiku-4-5@latest",

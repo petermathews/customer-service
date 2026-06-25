@@ -1,120 +1,88 @@
-# Smart Customer-Service Intake — one process, four ways
+# Customer service ticket triage, built four ways
 
-A single business process — **triage an inbound customer-service ticket and
-route it** — implemented four ways, from a keyword script to a Claude-powered
-agent, and compared on accuracy, cost, and capability.
+Same problem solved four different ways, then compared on cost, accuracy, and what each one can actually do.
 
-It's built the way I coach: take a real process, map the people / process /
-technology around it, implement it at increasing levels of sophistication, and
-make the team **defend with numbers** which one actually fits. Knowing *when* a
-rule beats ML beats GenAI is the judgment a coach has to teach — so this repo is
-organized around that decision, not around any one model.
+The problem: a support ticket comes in, sometimes with an attachment. Work out what it's about, how urgent it is, pull any data off the attachment, and route it to the right team.
 
-> Everything here is original teaching material. The dataset is synthetic on
-> purpose: real ticket queues are proprietary, which is exactly why a public
-> demo like this exists.
+I built that as a rules script, a trained ML model, a single Claude call, and a LangGraph agent. The interesting part isn't any one of them. It's deciding which one fits a given step, and backing that decision with numbers instead of opinion.
 
-## The same intake, four ways
+The dataset is synthetic. Real ticket queues are proprietary, which is the reason a public demo like this has to make its own data.
 
-| Approach | Stack | What it demonstrates |
+## The four versions
+
+| Version | Stack | What it covers |
 | --- | --- | --- |
-| **A · Rules** | Python, regex | The honest, free baseline every model must beat |
-| **B · Classic ML** | pandas, scikit-learn (TF-IDF + LogReg **and** a neural net) | Learned intent/sentiment, real held-out metrics |
-| **B′ · Image classification** | scikit-learn (MLP on pixels) | Reading a photo attachment — the 4th ML concept |
-| **C · GenAI** | Claude API, `messages.parse()` structured output | Zero-shot classification **and** receipt extraction in one call |
-| **D · Agent** | LangGraph + Claude | Conditional routing on intent *and* attachment type |
+| A. Rules | Python, regex | Keyword matching and a regex receipt parser. The cheap starting point. |
+| B. Classic ML | pandas, scikit-learn | TF-IDF with logistic regression, plus an MLP neural net for comparison. |
+| Image model | scikit-learn | A small classifier on image pixels, for photo attachments. |
+| C. GenAI | Claude API, structured output | One call classifies the ticket and extracts receipt fields, no training data. |
+| D. Agent | LangGraph + Claude | A graph that routes differently depending on intent and what's attached. |
 
-Each approach returns the **same** `TriageResult`, so they're directly
-comparable. The payoff is a **decision matrix** scoring all of them on accuracy,
-cost per 1k tickets (from real Claude pricing), latency, and capability — plus a
-**total-cost-of-ownership model** that maps every approach to its AWS / GCP /
-Azure managed service and finds the cost crossover.
+Every version returns the same result object, so they line up directly. `src/evaluate.py` runs them all and prints a table: accuracy, cost per 1,000 tickets at real Claude pricing, latency, and what each one can and can't handle.
 
-## The business process (People · Process · Technology)
+## Map the process first
 
-| Layer | Current state of a typical support org |
-| --- | --- |
-| **People** | Tier-1 agents read each ticket, guess the queue, manually open attachments, escalate angry customers by feel. |
-| **Process** | ticket → read → classify intent → check sentiment/priority → if a receipt/photo is attached, open it and extract details → route → act. |
-| **Technology** | A shared inbox + ticketing tool. Routing is human judgment; nothing is measured. |
+Before reaching for a model, write down the current process and who does what.
 
-The transformation question: **which steps should become a rule, a trained
-model, an LLM call, or an agent — and what does each cost?**
+**People:** frontline agents read each ticket, guess the queue, open attachments by hand, and escalate upset customers on instinct.
 
-## Start here
+**Process:** ticket arrives, someone reads it, classifies it, checks sentiment and priority, opens any receipt or photo to pull details, routes it, and acts.
 
-Open **[`notebooks/customer_service_triage.ipynb`](notebooks/customer_service_triage.ipynb)** —
-it walks the whole thing end to end with a *Coach's Note* at each step. It runs
-in **Google Colab** (`File → Open notebook → GitHub`, paste this repo's URL) or
-locally.
+**Technology:** a shared inbox and a ticketing tool. Routing is human judgment and nothing gets measured.
+
+Then the real question: which of those steps should be a rule, which a trained model, which an LLM call, which an agent, and what does each one cost.
+
+## Start in the notebook
+
+[`notebooks/customer_service_triage.ipynb`](notebooks/customer_service_triage.ipynb) walks the whole thing end to end. It runs in Google Colab (open it from the GitHub tab inside Colab and paste the repo URL) or locally.
 
 ## Run it locally
 
 ```bash
 pip install -r requirements.txt
-python data/generate_dataset.py      # builds data/tickets.csv (deterministic)
-python src/evaluate.py               # prints the decision matrix (offline + cost estimates)
+python data/generate_dataset.py      # builds data/tickets.csv
+python src/evaluate.py               # prints the comparison table
 ```
 
-To run the GenAI and agent paths against the real API:
+To run the Claude and agent versions against the real API:
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
 pip install langgraph langchain-anthropic
-python src/evaluate.py --live        # fills in measured GenAI accuracy + tokens
+python src/evaluate.py --live        # adds measured GenAI accuracy and tokens
 python src/approach_c_genai.py       # one live Claude triage call
-python src/approach_d_agent.py       # one LangGraph agent run
-```
-
-## Layout
-
-```
-data/generate_dataset.py        # reproducible synthetic ticket dataset (+ tickets.csv)
-src/schema.py                   # shared TriageResult + routing/priority policy
-src/approach_a_rules.py         # A — keyword + regex baseline
-src/approach_b_ml.py            # B — TF-IDF + LogReg / MLP neural net
-src/image_classifier.py         # B′ — image-classification mini-lesson
-src/approach_c_genai.py         # C — Claude structured output (tiered: Haiku/Sonnet/Opus)
-src/approach_d_agent.py         # D — LangGraph branching agent
-src/providers.py                # same Claude code on Anthropic / Bedrock / Vertex
-src/evaluate.py                 # runs everything → the decision matrix
-src/tco.py                      # cost model + fixed-vs-variable crossover
-docs/deployment_and_cost.md     # AWS/GCP/Azure mapping + TCO framework
-notebooks/                      # the narrated walkthrough
+python src/approach_d_agent.py       # one agent run
 ```
 
 ## Where it runs and what it costs
 
-The comparison doesn't stop at accuracy. [`docs/deployment_and_cost.md`](docs/deployment_and_cost.md)
-maps each approach to its **AWS / GCP / Azure** managed service, shows that the
-same Claude code runs on Bedrock, Vertex, or the Anthropic API (only the client
-+ model-id change — [`src/providers.py`](src/providers.py)), and
-[`src/tco.py`](src/tco.py) models monthly cost at scale:
+Accuracy is only half the call. The other half is where it runs and how the bill works. [`docs/deployment_and_cost.md`](docs/deployment_and_cost.md) maps each version to its AWS, GCP, and Azure service, shows that the same Claude code runs on Bedrock, Vertex, or the Anthropic API with only the client and model id changing ([`src/providers.py`](src/providers.py)), and [`src/tco.py`](src/tco.py) models the monthly cost at scale.
 
-```
+```bash
 python src/tco.py
-# → a provisioned ML endpoint ($88/mo fixed) beats per-token Claude Haiku
-#   above ~238,000 tickets/month. Below that, just call the LLM.
 ```
 
-That fixed-vs-variable crossover — not "use the biggest model" — is the kind of
-call a coach should make a team compute before they pick an architecture.
+A provisioned ML endpoint is a fixed cost whether one ticket flows through it or ten million. Claude calls are billed by the token, so they cost nothing when idle and scale with volume. They cross over around 238,000 tickets a month: below that, calling Haiku is cheaper than renting an endpoint; above it, host the trained model. Worth working out before you pick an architecture, not after.
 
-## What the comparison shows
+## Layout
 
-No single approach wins — and saying so *is* the lesson. Rules are free but
-brittle; classic ML is near-free at inference and strong on stable labels but
-needs data and can't read new formats; GenAI handles the long tail and
-extraction zero-shot but costs real money per call; the agent is the right tool
-when the *process itself* branches. The design I'd actually ship blends them —
-which is the judgment this repo exists to teach.
+```
+data/generate_dataset.py        reproducible synthetic ticket dataset
+src/schema.py                   shared result object, routing and priority rules
+src/approach_a_rules.py         A. keyword and regex baseline
+src/approach_b_ml.py            B. TF-IDF with LogReg and an MLP neural net
+src/image_classifier.py         image classification
+src/approach_c_genai.py         C. Claude structured output, Haiku/Sonnet/Opus
+src/approach_d_agent.py         D. LangGraph branching agent
+src/providers.py                same Claude code on Anthropic, Bedrock, or Vertex
+src/evaluate.py                 runs everything and prints the comparison
+src/tco.py                      cost model and the fixed vs variable crossover
+docs/deployment_and_cost.md     cloud mapping and total cost of ownership
+notebooks/                      the walkthrough
+```
 
 ## Stack
 
-Python · Jupyter / Google Colab · pandas · scikit-learn · LangGraph ·
-Claude API (`anthropic`, `langchain-anthropic`) — the same tools the Fellows
-work in.
+Python, Jupyter and Colab, pandas, scikit-learn, LangGraph, and the Claude API (`anthropic`, `langchain-anthropic`).
 
----
-
-Built by Peter Mathews as a hands-on teaching artifact for the AI Coach role.
+Built by Peter Mathews.

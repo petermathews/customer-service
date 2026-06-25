@@ -1,12 +1,12 @@
-"""Approach B — Traditional ML (scikit-learn).
+"""Approach B, Traditional ML (scikit-learn).
 
 Learns intent and sentiment from labelled data instead of hand-written rules.
 Two models, on purpose:
-  * LogisticRegression over TF-IDF — the strong, cheap baseline you must beat.
-  * MLPClassifier — a small **neural network**, to show the same pipeline with
+  * LogisticRegression over TF-IDF, the strong, cheap baseline you must beat.
+  * MLPClassifier, a small **neural network**, to show the same pipeline with
     a deeper model (one of the four ML concepts a coach has to teach).
 
-It still leans on the regex receipt parser for document fields — that's a fair
+It still leans on the regex receipt parser for document fields, that's a fair
 point in the comparison: classic ML classifies text well but doesn't do
 zero-shot extraction or read images without a lot more labelled data.
 """
@@ -30,7 +30,7 @@ DATA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 
 def _make_pipeline(model: str) -> Pipeline:
     """TF-IDF features → classifier. Swapping the final estimator is the only
-    difference between the baseline and the neural net — a nice thing to show
+    difference between the baseline and the neural net, a nice thing to show
     students about how scikit-learn pipelines compose."""
     if model == "logreg":
         clf = LogisticRegression(max_iter=1000)

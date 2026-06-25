@@ -1,4 +1,4 @@
-"""Approach A — Rules / heuristics (the 'before' state).
+"""Approach A, Rules / heuristics (the 'before' state).
 
 No ML. Keyword lexicons for intent, a sentiment word list, and regex to pull
 fields out of a receipt. This is what most support teams actually start with,
@@ -18,7 +18,7 @@ from schema import (
     decide_priority,
 )
 
-# Ordered most-specific first — the first lexicon that matches wins.
+# Ordered most-specific first, the first lexicon that matches wins.
 INTENT_KEYWORDS = [
     ("account_access", ["locked out", "log in", "login", "password", "hacked", "two-factor", "2fa", "reset"]),
     ("damaged_product", ["damaged", "cracked", "broken", "dent", "scratched", "torn"]),
@@ -59,7 +59,7 @@ def classify_sentiment(text: str) -> str:
 
 
 def extract_document(content: str) -> ExtractedFields:
-    """Regex extraction — works only because we know the receipt's exact
+    """Regex extraction, works only because we know the receipt's exact
     layout. Change the template and this silently returns nothing."""
     fields = ExtractedFields()
     if (m := RECEIPT_ORDER.search(content)):
@@ -72,7 +72,7 @@ def extract_document(content: str) -> ExtractedFields:
 
 
 def classify_image(content: str) -> str:
-    """The rules approach can't actually look at an image — it can only read
+    """The rules approach can't actually look at an image, it can only read
     the filename. That's the limitation the ML/agent approaches remove."""
     if "damaged" in content:
         return "damaged"

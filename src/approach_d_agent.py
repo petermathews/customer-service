@@ -1,7 +1,7 @@
-"""Approach D — Agentic workflow with LangGraph.
+"""Approach D, Agentic workflow with LangGraph.
 
 The same intake, but as a graph that *branches*: classify the ticket, then take
-different paths depending on the intent and what's attached —
+different paths depending on the intent and what's attached, 
 
     classify ─┬─ document attached ─→ extract receipt fields ─┐
               ├─ image attached ────→ classify the photo ──────┤
@@ -10,7 +10,7 @@ different paths depending on the intent and what's attached —
               (negative + complaint) ──────→ escalate ───────────┘
 
 That conditional routing is exactly the "depending on the action and whether
-there's an attachment, we take different actions" shape — and it's what an agent
+there's an attachment, we take different actions" shape, and it's what an agent
 framework models cleanly that a single prompt or a flat ML pipeline does not.
 
 Uses Claude (via langchain-anthropic) for classification + extraction, the
@@ -37,7 +37,7 @@ from schema import (
 
 class TicketState(TypedDict, total=False):
     """The state object that flows through the graph. Each node reads and adds
-    to it — this is the agent's working memory for one ticket."""
+    to it, this is the agent's working memory for one ticket."""
 
     text: str
     attachment_type: str

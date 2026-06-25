@@ -1,14 +1,14 @@
 """Image classification mini-lesson.
 
 When a customer attaches a *photo* (a damaged item, a screenshot of an error),
-the system needs to look at pixels, not text. That's image classification — one
+the system needs to look at pixels, not text. That's image classification, one
 of the four ML concepts a coach has to be fluent in.
 
 Training on real product photos needs a labelled image set we can't ship here,
 so this is a self-contained stand-in: scikit-learn's `digits` dataset (1,797
 real 8×8 handwritten-digit images) trained with an MLP. The *pipeline* is
-exactly what you'd use on product photos — load pixels → split → train a neural
-net → evaluate — only the images differ. In the agent, this classifier stands
+exactly what you'd use on product photos, load pixels → split → train a neural
+net → evaluate, only the images differ. In the agent, this classifier stands
 in for "look at the attached photo and decide what it shows."
 """
 

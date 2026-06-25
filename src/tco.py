@@ -1,23 +1,23 @@
-"""Total cost of ownership — and the fixed-vs-variable crossover.
+"""Total cost of ownership, and the fixed-vs-variable crossover.
 
 "What does it cost" has no answer without "where does it run." Each approach
 maps to a different cloud cost *model*, and the models cross over:
 
   * A trained model on a **provisioned endpoint** (SageMaker / Vertex Endpoint /
-    Azure ML online endpoint) is a **fixed** monthly cost — you pay for the
+    Azure ML online endpoint) is a **fixed** monthly cost, you pay for the
     instance whether 1 or 10M tickets flow through it. Cheap per ticket at high
     volume, wasteful at low volume.
   * A **per-token LLM** (Claude on Bedrock / Vertex / Anthropic) is **variable**
-    — $0 when idle, scales linearly with volume. Cheap at low volume, expensive
+, $0 when idle, scales linearly with volume. Cheap at low volume, expensive
     at high volume.
   * **Rules on serverless** (Lambda / Cloud Functions / Azure Functions) are the
     near-free variable floor.
 
-The crossover volume — where the fixed endpoint becomes cheaper than calling the
-LLM — is the single most useful number in this whole analysis, and the kind of
+The crossover volume, where the fixed endpoint becomes cheaper than calling the
+LLM, is the single most useful number in this whole analysis, and the kind of
 thing a coach should make a team compute before they pick an architecture.
 
-All prices are **illustrative on-demand list prices** for shaping the decision —
+All prices are **illustrative on-demand list prices** for shaping the decision, 
 confirm current pricing for your region/provider. Run:  python src/tco.py
 """
 
@@ -96,8 +96,8 @@ def main() -> None:
         f"\nCrossover: a provisioned ML endpoint (${ML_ENDPOINT_MONTHLY:.0f}/mo fixed) "
         f"beats per-token Claude Haiku above ~{xo:,.0f} tickets/month."
     )
-    print("Below that, just call the LLM — you're not paying for an idle endpoint.")
-    print("Above it, host the trained model. (Quality is a separate axis — the")
+    print("Below that, just call the LLM, you're not paying for an idle endpoint.")
+    print("Above it, host the trained model. (Quality is a separate axis, the")
     print("LLM may be the only option that handles new formats and attachments.)")
 
 

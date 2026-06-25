@@ -1,7 +1,7 @@
 """Shared data structures for the triage pipeline.
 
-Every approach in this repo — rules, classic ML, GenAI, and the LangGraph
-agent — produces the *same* `TriageResult` for an incoming ticket. That's the
+Every approach in this repo, rules, classic ML, GenAI, and the LangGraph
+agent, produces the *same* `TriageResult` for an incoming ticket. That's the
 whole point: one business process, four implementations, directly comparable.
 """
 

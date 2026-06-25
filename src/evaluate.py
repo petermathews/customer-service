@@ -2,7 +2,7 @@
 
 The offline approaches (rules, classic ML) are measured directly on the
 held-out set. The GenAI/agent costs are computed from real published pricing
-and a representative token count — re-run with a live API key (`--live`) to fill
+and a representative token count, re-run with a live API key (`--live`) to fill
 in measured accuracy and tokens for those rows too.
 
 Run:  python src/evaluate.py          # offline rows + cost estimates
@@ -65,23 +65,23 @@ def build_matrix(live: bool = False) -> pd.DataFrame:
 
     rows = []
 
-    # A — rules
+    # A, rules
     m = evaluate_offline(test, rules.triage)
     rows.append({"approach": "A. Rules / regex", **m, "cost_per_1k_$": 0.0,
                  "training_data": "none", "extraction": "regex (brittle)",
                  "images": "filename only", "explainability": "total"})
 
-    # B — classic ML (logreg baseline + mlp neural net)
-    for model, label in [("logreg", "B. ML — TF-IDF + LogReg"), ("mlp", "B. ML — neural net (MLP)")]:
+    # B, classic ML (logreg baseline + mlp neural net)
+    for model, label in [("logreg", "B. ML, TF-IDF + LogReg"), ("mlp", "B. ML, neural net (MLP)")]:
         triager = MLTriager(intent_model=model, sentiment_model=model).fit(train)
         m = evaluate_offline(test, triager.triage)
         rows.append({"approach": label, **m, "cost_per_1k_$": 0.0,
                      "training_data": "needs labels", "extraction": "regex (brittle)",
                      "images": "needs labelled photos", "explainability": "medium"})
 
-    # C/D — GenAI tiers (cost from pricing; accuracy measured only with --live)
+    # C/D, GenAI tiers (cost from pricing; accuracy measured only with --live)
     for tier in ("haiku", "sonnet", "opus"):
-        row = {"approach": f"C. GenAI — Claude {tier}",
+        row = {"approach": f"C. GenAI, Claude {tier}",
                "intent_acc": float("nan"), "sentiment_acc": float("nan"),
                "doc_extract_acc": float("nan"), "latency_ms": float("nan"),
                "cost_per_1k_$": round(cost_per_1k(tier), 2),
